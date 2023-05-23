@@ -234,6 +234,7 @@ canvas.pack(side="top")
 UTCIImage = tk.PhotoImage(file="/home/buga/wetter-screen/pictures/UTCI-Chart.png")
 UTCIImage = UTCIImage.subsample(2) #Resize 1/2
 canvas.create_image(45, 10, anchor="nw", image=UTCIImage)
+print("new")
 
 # Draw Arrow with Text
 UTCIArrow = tk.PhotoImage(file="/home/buga/wetter-screen/pictures/UTCI-Arrow.png")
