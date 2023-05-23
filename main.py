@@ -230,8 +230,6 @@ textUTCI.tag_add("blue", startIndexUTCI, endIndexUTCI)
 canvas = tk.Canvas(UTCIFrame, width=int((264/2)+10+45), height=int((1753/2)+20), bg='#F0F8FF')
 canvas.pack(side="top")
 
-be
-
 # Draw Arrow with Text
 UTCIArrow = tk.PhotoImage(file="/home/buga/wetter-screen/pictures/UTCI-Arrow.png")
 UTCIArrow = UTCIArrow.subsample(2)
