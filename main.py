@@ -61,7 +61,7 @@ header_visualization.pack(side="top", padx=10, pady=10)
 # Video
 my_label = tk.Label(videoFrame, justify="left")
 my_label.pack()
-player = tkvideo("home/buga/wetter-screen/pictures/sample.mp4", my_label, loop=1, size=(864,486))
+player = tkvideo("/pictures/sample.mp4", my_label, loop=1, size=(864,486))
 player.play()
 
 # Frame Information
@@ -231,12 +231,12 @@ canvas = tk.Canvas(UTCIFrame, width=int((264/2)+10+45), height=int((1753/2)+20),
 canvas.pack(side="top")
 
 # Load Image
-UTCIImage = tk.PhotoImage(file="home/buga/wetter-screen/pictures/UTCI-Chart.png")
+UTCIImage = tk.PhotoImage(file="/pictures/UTCI-Chart.png")
 UTCIImage = UTCIImage.subsample(2) #Resize 1/2
 canvas.create_image(45, 10, anchor="nw", image=UTCIImage)
 
 # Draw Arrow with Text
-UTCIArrow = tk.PhotoImage(file="home/buga/wetter-screen/pictures/UTCI-Arrow.png")
+UTCIArrow = tk.PhotoImage(file="/pictures/UTCI-Arrow.png")
 UTCIArrow = UTCIArrow.subsample(2)
 if utci <= 0:
     canvas.create_image(5, 555, anchor="nw", image=UTCIArrow)
