@@ -227,7 +227,7 @@ textUTCI.tag_configure("blue", foreground="blue", font=("Arial", 12, "bold"))
 textUTCI.tag_add("blue", startIndexUTCI, endIndexUTCI)
 
 # Canvas, width normally 264
-canvas = tk.Canvas(UTCIFrame, width=((264/2)+10+45), height=((1753/2)+20), bg='#F0F8FF')
+canvas = tk.Canvas(UTCIFrame, width=int((264/2)+10+45), height=int((1753/2)+20), bg='#F0F8FF')
 canvas.pack(side="top")
 
 # Load Image
