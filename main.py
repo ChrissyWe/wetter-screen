@@ -91,7 +91,7 @@ def updateFacts():
     current = f"Aktuelle Temperatur außen: {currentTemperature} °C\nAktuelle Temperatur in Sprühanlage 1: {currentTemperature} °C"
 
     text_temperatures = tk.Text(informationTemperature, font=("Arial", 11), bg='#F0F8FF', fg='black', height=2,
-                                width=50, borderwidth=0)
+                                width=50, borderwidth=0, highlightthickness=0)
     text_temperatures.pack(side="top")
     text_temperatures.insert("1.0", current)
 
@@ -112,7 +112,7 @@ def updateFacts():
     humidity_information = f"Stunden über 30°C bis jetzt außen, ohne Sprühanlage: {heatWithoutSystem}\nStunden über 30°C bis jetzt mit Sprühanlage: {heatWithSystem}"
 
     text_humidity_information = tk.Text(informationHumidity, font=("Arial", 11), bg='#F0F8FF', fg='black', height=2,
-                                        width=50, borderwidth=0)
+                                        width=50, borderwidth=0, highlightthickness=0)
     text_humidity_information.pack(side="top")
     text_humidity_information.insert("1.0", humidity_information)
 
@@ -149,7 +149,7 @@ def updateUTCI():
     #    textUTCI.insert("1.0", currentUTCI, "center")  # Fügen Sie den neuen Text ein
     #    textUTCI.config(state=tk.DISABLED)  # Deaktivieren Sie das Text-Widget wieder
     #else:
-    textUTCI = tk.Text(UTCIFrame, font=("Arial", 11), bg='#F0F8FF', fg='black', height=3, width=20, borderwidth=0)
+    textUTCI = tk.Text(UTCIFrame, font=("Arial", 11), bg='#F0F8FF', fg='black', height=3, width=20, borderwidth=0, highlightthickness=0)
     textUTCI.insert("1.0", currentUTCI, "center")
     textUTCI.tag_configure("center", justify="center")
     textUTCI.pack(side="top")
@@ -187,7 +187,7 @@ def updateUTCI():
     # UTCI = Universal Thermal Climate Index
     currentUTCI = f"(UTCI - Universal \nThermal Climate Index)"
 
-    textUTCI = tk.Text(UTCIFrame, font=("Arial", 8), bg='#F0F8FF', fg='black', height=3, width=20, borderwidth=0)
+    textUTCI = tk.Text(UTCIFrame, font=("Arial", 8), bg='#F0F8FF', fg='black', height=3, width=20, borderwidth=0, highlightthickness=0)
     textUTCI.insert("1.0", currentUTCI, "center")
     textUTCI.tag_configure("center", justify="center")
     textUTCI.tag_add("center", "1.0", "end")
