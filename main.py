@@ -90,7 +90,7 @@ def updateFacts():
     # Text above Graph
     current = f"Aktuelle Temperatur außen: {currentTemperature} °C\nAktuelle Temperatur in Sprühanlage 1: {currentTemperature} °C"
 
-    text_temperatures = tk.Text(informationTemperature, font=("Arial", 18), bg='#F0F8FF', fg='black', height=2,
+    text_temperatures = tk.Text(informationTemperature, font=("Arial", 24), bg='#F0F8FF', fg='black', height=2,
                                 width=50, borderwidth=0, highlightthickness=0)
     text_temperatures.pack(side="top")
     text_temperatures.insert("1.0", current)
@@ -98,10 +98,10 @@ def updateFacts():
     start_index = text_temperatures.search(str(currentTemperature) + " °C", "1.0", stopindex=tk.END)
     second_occurrence_index = text_temperatures.search(str(currentTemperature), f"{start_index}+1c", stopindex=tk.END)
     end_index = f"{start_index}+{len(str(currentTemperature)) + 3}c"
-    text_temperatures.tag_configure("blue", foreground="blue", font=("Arial", 18, "bold"))
+    text_temperatures.tag_configure("blue", foreground="blue", font=("Arial", 24, "bold"))
     text_temperatures.tag_add("blue", start_index, end_index)
 
-    text_temperatures.tag_configure("blue", foreground="blue", font=("Arial", 18, "bold"))
+    text_temperatures.tag_configure("blue", foreground="blue", font=("Arial", 24, "bold"))
     text_temperatures.tag_add("blue", second_occurrence_index,
                               f"{second_occurrence_index}+{len(str(currentTemperature)) + 3}c")
 
@@ -111,7 +111,7 @@ def updateFacts():
     # Text beside Humidity
     humidity_information = f"Stunden über 30°C bis jetzt außen, ohne Sprühanlage: {heatWithoutSystem}\nStunden über 30°C bis jetzt mit Sprühanlage: {heatWithSystem}"
 
-    text_humidity_information = tk.Text(informationHumidity, font=("Arial", 18), bg='#F0F8FF', fg='black', height=2,
+    text_humidity_information = tk.Text(informationHumidity, font=("Arial", 24), bg='#F0F8FF', fg='black', height=2,
                                         width=50, borderwidth=0, highlightthickness=0)
     text_humidity_information.pack(side="top")
     text_humidity_information.insert("1.0", humidity_information)
@@ -121,7 +121,7 @@ def updateFacts():
                                                            stopindex=tk.END)
     endIndexHumidity = f"{startIndexHumidity}+{len(str(heatWithoutSystem))}c"
     secondEndHumidity = f"{secondIndexHumidity}+{len(str(heatWithSystem))}c"
-    text_humidity_information.tag_configure("blue", foreground="blue", font=("Arial", 18, "bold"))
+    text_humidity_information.tag_configure("blue", foreground="blue", font=("Arial", 24, "bold"))
     text_humidity_information.tag_add("blue", secondIndexHumidity, secondEndHumidity)
     text_humidity_information.tag_add("blue", startIndexHumidity, endIndexHumidity)
 
@@ -149,7 +149,7 @@ def updateUTCI():
     #    textUTCI.insert("1.0", currentUTCI, "center")  # Fügen Sie den neuen Text ein
     #    textUTCI.config(state=tk.DISABLED)  # Deaktivieren Sie das Text-Widget wieder
     #else:
-    textUTCI = tk.Text(UTCIFrame, font=("Arial", 18), bg='#F0F8FF', fg='black', height=3, width=20, borderwidth=0, highlightthickness=0)
+    textUTCI = tk.Text(UTCIFrame, font=("Arial", 24), bg='#F0F8FF', fg='black', height=3, width=20, borderwidth=0, highlightthickness=0)
     textUTCI.insert("1.0", currentUTCI, "center")
     textUTCI.tag_configure("center", justify="center")
     textUTCI.pack(side="top")
@@ -157,7 +157,7 @@ def updateUTCI():
     # Makes the Temperature blue
     startIndexUTCI = textUTCI.search(str(utci) + " °C", "1.0", stopindex=tk.END)
     endIndexUTCI = f"{startIndexUTCI}+{len(str(utci)) + 3}c"
-    textUTCI.tag_configure("blue", foreground="blue", font=("Arial", 18, "bold"))
+    textUTCI.tag_configure("blue", foreground="blue", font=("Arial", 24, "bold"))
     textUTCI.tag_add("blue", startIndexUTCI, endIndexUTCI)
 
     # Canvas, width normally 264
@@ -174,15 +174,15 @@ def updateUTCI():
     if utci == "--":
         utci = ""
     elif utci <= 0:
-        arrow = canvas.create_image(5, 555*2, anchor="nw", image=UTCIArrow)
+        arrow = canvas.create_image(5*2, 555*2, anchor="nw", image=UTCIArrow)
     elif utci <= 9:
-        arrow = canvas.create_image(5, 470*2, anchor="nw", image=UTCIArrow)
+        arrow = canvas.create_image(5*2, 470*2, anchor="nw", image=UTCIArrow)
     elif utci <= 26:
-        arrow = canvas.create_image(5, 380*2, anchor="nw", image=UTCIArrow)
+        arrow = canvas.create_image(5*2, 380*2, anchor="nw", image=UTCIArrow)
     elif utci <= 32:
-        arrow = canvas.create_image(5, 290*2, anchor="nw", image=UTCIArrow)
+        arrow = canvas.create_image(5*2, 290*2, anchor="nw", image=UTCIArrow)
     elif utci <= 38:
-        arrow = canvas.create_image(5, 210*2, anchor="nw", image=UTCIArrow)
+        arrow = canvas.create_image(5*2, 210*2, anchor="nw", image=UTCIArrow)
 
     # UTCI = Universal Thermal Climate Index
     currentUTCI = f"(UTCI - Universal \nThermal Climate Index)"
@@ -351,7 +351,7 @@ right_width_pct = 1.0 - left_width_pct
 
 #Get Font
 font_family = "Ubuntu Bold"
-font_size = 24
+font_size = 48
 custom_font = font.Font(family=font_family, size=font_size)
 
 # Left Frame
