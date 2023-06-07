@@ -369,7 +369,7 @@ header_visualization.pack(side="top", padx=10, pady=10)
 # Video
 my_label = tk.Label(videoFrame, justify="left")
 my_label.pack()
-player = tkvideo("C:\\Users\\Chris\\Documents\\Semester_8\\Bundesgartenschau\\sample.mp4", my_label, loop=1, size=(864, 486))
+player = tkvideo("/home/buga/wetter-screen/pictures/sample.mp4", my_label, loop=1, size=(864, 486))
 player.play()
 
 # Frame Information
