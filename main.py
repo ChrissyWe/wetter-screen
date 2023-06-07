@@ -165,24 +165,24 @@ def updateUTCI():
     canvas.pack(side="top")
 
     UTCIImage = tk.PhotoImage(file="/home/buga/wetter-screen/pictures/UTCI-Chart.png")
-    UTCIImage = UTCIImage.subsample(2)  # Resize 1/2
+    #UTCIImage = UTCIImage.subsample(2)  # Resize 1/2
     canvas.create_image(45, 10, anchor="nw", image=UTCIImage)
 
     # Draw Arrow with Text
     UTCIArrow = tk.PhotoImage(file="/home/buga/wetter-screen/pictures/UTCI-Arrow.png")
-    UTCIArrow = UTCIArrow.subsample(2)
+    #UTCIArrow = UTCIArrow.subsample(2)
     if utci == "--":
         utci = ""
     elif utci <= 0:
-        arrow = canvas.create_image(5, 555, anchor="nw", image=UTCIArrow)
+        arrow = canvas.create_image(5, 555*2, anchor="nw", image=UTCIArrow)
     elif utci <= 9:
-        arrow = canvas.create_image(5, 470, anchor="nw", image=UTCIArrow)
+        arrow = canvas.create_image(5, 470*2, anchor="nw", image=UTCIArrow)
     elif utci <= 26:
-        arrow = canvas.create_image(5, 380, anchor="nw", image=UTCIArrow)
+        arrow = canvas.create_image(5, 380*2, anchor="nw", image=UTCIArrow)
     elif utci <= 32:
-        arrow = canvas.create_image(5, 290, anchor="nw", image=UTCIArrow)
+        arrow = canvas.create_image(5, 290*2, anchor="nw", image=UTCIArrow)
     elif utci <= 38:
-        arrow = canvas.create_image(5, 210, anchor="nw", image=UTCIArrow)
+        arrow = canvas.create_image(5, 210*2, anchor="nw", image=UTCIArrow)
 
     # UTCI = Universal Thermal Climate Index
     currentUTCI = f"(UTCI - Universal \nThermal Climate Index)"
