@@ -12,8 +12,8 @@ import UTCI
 
 def updateData():
     # Current Request
-    global timesToday
-    global temperaturesToday
+    global times_today_first
+    global temperatures_today_first
     global humidityToday
     global times
     global timesMatplotlib
@@ -30,6 +30,7 @@ def updateData():
 
     newUTCI = round(UTCI.universal_thermal_climate_index(float(currentData["t2m_med"]), float(currentData["t2m_med"]),
                                                       float(currentData["wg_med"]), float(currentData["rf_med"])), 1)
+    #newUTCI = 38
 
     if (utci == None):
         utci = newUTCI
@@ -40,14 +41,14 @@ def updateData():
 
 
     if(((datetime.strptime(str(currentData["measure_date"]), date_format)) + delta) == datetime(datetime.now().year, datetime.now().month, datetime.now().day, 0, 0, 0)):
-        timesToday = []
-        temperaturesToday = []
+        times_today_first = []
+        temperatures_today_first = []
         humidityToday = []
 
     if((datetime.strptime(str(currentData["measure_date"]), date_format)) + delta != times[len(times) - 1]):
         times.pop(0)
         times.append(datetime.strptime(str(currentData["measure_date"]), date_format) + delta)
-        timesToday.append(datetime.strptime(str(currentData["measure_date"]), date_format) + delta)
+        times_today_first.append(datetime.strptime(str(currentData["measure_date"]), date_format) + delta)
         humidity.pop(0)
         humidity.append(float(currentData["rf_med"]))
         humidityToday.append(float(currentData["rf_med"]))
@@ -57,13 +58,14 @@ def updateData():
             minutesOverThirty += 1
             updateFacts()
         temperatures.append(newTemperature)
-        temperaturesToday.append(newTemperature)
+        temperatures_today_first.append(newTemperature)
         print(datetime.strptime(str(currentData["measure_date"]), date_format) + delta)
         if (currentTemperature != newTemperature):
             currentTemperature = newTemperature
             updateFacts()
 
     root.after(100000, updateData)
+
 
 def updateFacts():
     global informationTemperature
@@ -90,7 +92,7 @@ def updateFacts():
     # Text above Graph
     current = f"Aktuelle Temperatur außen: {currentTemperature} °C\nAktuelle Temperatur in Sprühanlage 1: {currentTemperature} °C"
 
-    text_temperatures = tk.Text(informationTemperature, font=("Arial", 24), bg='#F0F8FF', fg='black', height=2,
+    text_temperatures = tk.Text(informationTemperature, font=("Arial", 24), bg='white', fg='black', height=2,
                                 width=50, borderwidth=0, highlightthickness=0)
     text_temperatures.pack(side="top")
     text_temperatures.insert("1.0", current)
@@ -111,7 +113,7 @@ def updateFacts():
     # Text beside Humidity
     humidity_information = f"Stunden über 30°C bis jetzt außen, ohne Sprühanlage: {heatWithoutSystem}\nStunden über 30°C bis jetzt mit Sprühanlage: {heatWithSystem}"
 
-    text_humidity_information = tk.Text(informationHumidity, font=("Arial", 24), bg='#F0F8FF', fg='black', height=2,
+    text_humidity_information = tk.Text(informationHumidity, font=("Arial", 24), bg='white', fg='black', height=2,
                                         width=50, borderwidth=0, highlightthickness=0)
     text_humidity_information.pack(side="top")
     text_humidity_information.insert("1.0", humidity_information)
@@ -125,6 +127,7 @@ def updateFacts():
     text_humidity_information.tag_add("blue", secondIndexHumidity, secondEndHumidity)
     text_humidity_information.tag_add("blue", startIndexHumidity, endIndexHumidity)
 
+
 def updateUTCI():
     global utci
     global UTCIImage
@@ -133,23 +136,23 @@ def updateUTCI():
     global arrow
     global canvas
     global UTCIFrame
+    global UTCIBuffer
 
     if textUTCI is not None:
         UTCIFrame.destroy()
+
+    if UTCIBuffer is not None:
+        UTCIBuffer.destroy()
 
     # UTCI Calculator
     UTCIFrame = tk.Frame(rightFrame, bg="#F0F8FF")
     UTCIFrame.pack(side="right", fill="both", expand=True, padx=10, pady=10)
     # UTCI Information
+    UTCIBuffer = tk.Frame(UTCIFrame, bg="#F0F8FF")
+    UTCIBuffer.pack(side="top", fill="both", expand=True, pady=130)
     currentUTCI = f"Gefühlte Außenluft-\nTemperatur Aktuell: \n {utci} °C"
 
-    #if textUTCI is not None:
-   #     textUTCI.config(state=tk.NORMAL)  # Aktivieren Sie das Text-Widget, um den Text zu ändern
-     #   textUTCI.delete("1.0", tk.END)  # Löschen Sie den alten Text
-    #    textUTCI.insert("1.0", currentUTCI, "center")  # Fügen Sie den neuen Text ein
-    #    textUTCI.config(state=tk.DISABLED)  # Deaktivieren Sie das Text-Widget wieder
-    #else:
-    textUTCI = tk.Text(UTCIFrame, font=("Arial", 24), bg='#F0F8FF', fg='black', height=3, width=20, borderwidth=0, highlightthickness=0)
+    textUTCI = tk.Text(UTCIBuffer, font=("Arial", 24), bg='#F0F8FF', fg='black', height=3, width=20, borderwidth=0, highlightthickness=0)
     textUTCI.insert("1.0", currentUTCI, "center")
     textUTCI.tag_configure("center", justify="center")
     textUTCI.pack(side="top")
@@ -161,37 +164,45 @@ def updateUTCI():
     textUTCI.tag_add("blue", startIndexUTCI, endIndexUTCI)
 
     # Canvas, width normally 264
-    canvas = tk.Canvas(UTCIFrame, width=int((264) + 10 + 45), height=int((1753) + 20), bg='#F0F8FF', highlightthickness=0)
+    canvas = tk.Canvas(UTCIBuffer, width=int((264) + 10 + 45), height=int((1753) + 20), bg='#F0F8FF', highlightthickness=0)
     canvas.pack(side="top")
 
-    UTCIImage = tk.PhotoImage(file="/home/buga/wetter-screen/pictures/UTCI-Chart.png")
+    UTCIImage = tk.PhotoImage(file="C:\\Users\\Chris\\Documents\\Semester_8\\Bundesgartenschau\\UTCI-Chart.png")
     #UTCIImage = UTCIImage.subsample(2)  # Resize 1/2
     canvas.create_image(45, 10, anchor="nw", image=UTCIImage)
 
     # Draw Arrow with Text
-    UTCIArrow = tk.PhotoImage(file="/home/buga/wetter-screen/pictures/UTCI-Arrow.png")
+    UTCIArrow = tk.PhotoImage(file="C:\\Users\\Chris\\Documents\\Semester_8\\Bundesgartenschau\\UTCI-Arrow.png")
     #UTCIArrow = UTCIArrow.subsample(2)
     if utci == "--":
         utci = ""
+    elif utci <= -13:
+        arrow = canvas.create_image(-5, 815, anchor="nw", image=UTCIArrow)
     elif utci <= 0:
-        arrow = canvas.create_image(5*2, 555*2, anchor="nw", image=UTCIArrow)
+        koordinate = 815 - ((utci + 13) * (18.5/2))
+        arrow = canvas.create_image(-5, koordinate, anchor="nw", image=UTCIArrow)
     elif utci <= 9:
-        arrow = canvas.create_image(5*2, 470*2, anchor="nw", image=UTCIArrow)
+        koordinate = 694.75 - ((utci) * (120/9))
+        arrow = canvas.create_image(-5, koordinate, anchor="nw", image=UTCIArrow)
     elif utci <= 26:
-        arrow = canvas.create_image(5*2, 380*2, anchor="nw", image=UTCIArrow)
+        koordinate = 574.5 - ((utci - 9) * (120/17))
+        arrow = canvas.create_image(-5, koordinate, anchor="nw", image=UTCIArrow)
     elif utci <= 32:
-        arrow = canvas.create_image(5*2, 290*2, anchor="nw", image=UTCIArrow)
+        koordinate = 454.5 - ((utci - 26) * (120/6))
+        arrow = canvas.create_image(-5, koordinate, anchor="nw", image=UTCIArrow)
     elif utci <= 38:
-        arrow = canvas.create_image(5*2, 210*2, anchor="nw", image=UTCIArrow)
+        koordinate = 214.5 - ((utci - 38) * (120/6))
+        arrow = canvas.create_image(-5, koordinate, anchor="nw", image=UTCIArrow)
 
     # UTCI = Universal Thermal Climate Index
     currentUTCI = f"(UTCI - Universal \nThermal Climate Index)"
 
-    textUTCI = tk.Text(UTCIFrame, font=("Arial", 14), bg='#F0F8FF', fg='black', height=3, width=20, borderwidth=0, highlightthickness=0)
+    textUTCI = tk.Text(UTCIBuffer, font=("Arial", 14), bg='#F0F8FF', fg='black', height=3, width=20, borderwidth=0, highlightthickness=0)
     textUTCI.insert("1.0", currentUTCI, "center")
     textUTCI.tag_configure("center", justify="center")
     textUTCI.tag_add("center", "1.0", "end")
     textUTCI.pack(side="top")
+
 
 def toggleGraphs():
     global currentGraphTemperature
@@ -225,83 +236,98 @@ def toggleGraphs():
         currentGraphHumidity = figureHumidity
         counter = 0
 
+    #graphFrameTemperature = tk.Frame(informationGraphs, bg="green")
+    #graphFrameTemperature.pack(side="top", fill="both", expand=True)
     currentGraphTemperature.get_tk_widget().pack(side="top", fill="both", expand=True)
-    currentGraphHumidity.get_tk_widget().pack(sid="top", fill="both", expand=True)
+
+    #graphFrameHumidity = tk.Frame(informationGraphs, bg="green")
+    #graphFrameHumidity.pack(side="top", fill="both", expand=True)
+    currentGraphHumidity.get_tk_widget().pack(side="top", fill="both", expand=True)
 
     root.after(15000, toggleGraphs)
+
 
 def createTemperatureGraphWeek():
     # Graph 1 (Temperature - Week)
     fig1, ax1 = plt.subplots()
-    ax1.set_title('Temperaturen der letzten Woche', color="black")
-    ax1.set_ylabel("Temperatur")
+    ax1.set_title('Temperaturen letzte Woche', color="black", fontsize=28)
+    #fig1.suptitle("letzte Woche", fontsize=28, fontweight='bold', y=1)
+    #fig1.text(0.5, 0.97, "Temperaturen", fontsize=32, fontweight='bold', ha='center')
+    #fig1.text(0.5, 0.97, "diese Woche", fontsize=32, fontweight='bold', ha='right')
+    ax1.set_ylabel("Temperatur", fontsize=16)
+    ax1.set_xlabel("Datum", fontsize=16)
     ax1.tick_params(colors="black")
     for spine in ax1.spines.values():
         spine.set_edgecolor("black")
         spine.set_linewidth(1)
     ax1.fill_between((datetime(datetime.now().year, datetime.now().month, datetime.now().day, 0, 0, 0), currentTime), 0,
-                     30, facecolor='orange', alpha=0.2)
-    # ax1.fill_between(x, y2, color="green", label='Temperatur Korridor 1', alpha=0.3)
-    # ax1_legend = ax1.legend(loc='upper right')
-    # ax1_legend.get_frame().set_facecolor('#191919')
-    # ax1_legend.get_texts()[0].set_color('white')
-    # ax1_legend.get_texts()[1].set_color('white')
+                     40, facecolor='orange', alpha=0.2)
+    ax1.fill_between(times_second, temperatures_second, color="#f8686a", alpha=0.1)
     ax1.set_frame_on(False)
-    ax1.plot(times, temperatures, color="red", label="Sinus")
-    # ax1.fill_between( , facecolor='orange')
+    ax1.plot(times, temperatures, color="firebrick", label="Temperatur 1", linewidth=2.5)
+    ax1.plot(times_second, temperatures_second, color="#f8686a", label="Temperatur 2", linestyle="--", linewidth=2.5)
+    legend = ax1.legend(fontsize=16)
+    legend.get_frame().set_facecolor("#F0F8FF")
     ax1.xaxis.set_major_formatter(mdates.DateFormatter('%d.%m.'))
-    # ax1.plot(x, y2, color="green")
-    fig1.patch.set_facecolor('#F0F8FF')
-    ax1.set_facecolor('#F0F8FF')
+    #fig1.patch.set_facecolor('#F0F8FF')
+    #ax1.set_facecolor('#F0F8FF')
     figure = FigureCanvasTkAgg(fig1, master=graph_frame)
     return figure, ax1, fig1
-    # temperatureGraphWeek.draw()
-    # temperatureGraphWeek.get_tk_widget().pack(side="top", fill="both", expand=True)
+
 
 def createTemperatureGraphDay():
     # Graph 1 (Temperature - Day)
     fig3, ax3 = plt.subplots()
-    ax3.set_title('Temperaturen heute', color="black")
-    ax3.set_ylabel("Temperatur")
+    ax3.set_title('Temperaturen heute', color="black", fontsize=28)
+    ax3.set_ylabel("Temperatur", fontsize=16)
+    ax3.set_xlabel("Uhrzeit", fontsize=16)
     ax3.tick_params(colors="black")
     for spine in ax3.spines.values():
         spine.set_edgecolor("black")
         spine.set_linewidth(1)
     ax3.xaxis.set_major_formatter(mdates.DateFormatter("%H:%M"))
     ax3.fill_between((datetime(datetime.now().year, datetime.now().month, datetime.now().day, 0, 0, 0), currentTime), 0,
-                     30, facecolor='orange', alpha=0.2)
+                     40, facecolor='orange', alpha=0.2)
+    ax3.fill_between(times_today_second, temperatures_today_second, color="#f8686a", alpha=0.1)
     ax3.set_frame_on(False)
-    ax3.plot(timesToday, temperaturesToday, color="red")
-    fig3.patch.set_facecolor('#F0F8FF')
+    ax3.plot(times_today_first, temperatures_today_first, color="firebrick", label="Temperatur 1", linewidth=2.5)
+    ax3.plot(times_today_second, temperatures_today_second, color="#f8686a", label="Temperatur 2", linestyle="--", linewidth=2.5)
+    legend = ax3.legend(fontsize=16)
+    legend.get_frame().set_facecolor("#F0F8FF")
+    #fig3.patch.set_facecolor('#F0F8FF')
     figure = FigureCanvasTkAgg(fig3, master=graph_frame)
     return figure, ax3, fig3
+
 
 def createHumidityGraphWeek():
     # Graph 2 (Humidity)
     fig2, ax2 = plt.subplots()
-    ax2.set_title('Relative Luftfeuchte der letzten Woche', color="black")
-    ax2.set_ylabel("Luftfeuchte", color="black")
+    ax2.set_title('Relative Luftfeuchte letzte Woche', color="black", fontsize=28)
+    ax2.set_ylabel("Luftfeuchte", color="black", fontsize=16)
+    ax2.set_xlabel("Datum", fontsize=16)
     ax2.tick_params(colors="black")
     for spine in ax2.spines.values():
         spine.set_edgecolor("black")
         spine.set_linewidth(1)
     ax2.fill_between((datetime(datetime.now().year, datetime.now().month, datetime.now().day, 0, 0, 0), currentTime), 0,
                      100, facecolor='orange', alpha=0.2)
+    ax2.fill_between(times_second, humidity_second, color="teal", alpha=0.1)
     ax2.set_frame_on(False)
-    ax2.plot(times, humidity)
+    ax2.plot(times, humidity, label="Luftfeuchte 1", linewidth=2.5)
+    ax2.plot(times_second, humidity_second, color="teal", label="Luftfeuchte 2", linestyle="--", linewidth=2.5)
+    legend = ax2.legend(fontsize=16)
+    legend.get_frame().set_facecolor("#F0F8FF")
     ax2.xaxis.set_major_formatter(mdates.DateFormatter('%d.%m.'))
-    fig2.patch.set_facecolor('#F0F8FF')
-    ax2.set_facecolor('#F0F8FF')
-    #canvas2 = FigureCanvasTkAgg(fig2, master=graph_frame)
-    #canvas2.draw()
-    #canvas2.get_tk_widget().pack(side="top", fill="both", expand=True)
+    #fig2.patch.set_facecolor('#F0F8FF')
+    #ax2.set_facecolor('#F0F8FF')
     figure = FigureCanvasTkAgg(fig2, master=graph_frame)
     return figure, ax2, fig2
 
+
 def createHumidityGraphDay():
     fig4, ax4 = plt.subplots()
-    ax4.set_title('Relative Luftfeuchte der letzten Woche', color="black")
-    ax4.set_ylabel("Luftfeuchte", color="black")
+    ax4.set_title('Relative Luftfeuchte heute', color="black", fontsize=28)
+    ax4.set_ylabel("Luftfeuchte", color="black", fontsize=16)
     ax4.tick_params(colors="black")
     for spine in ax4.spines.values():
         spine.set_edgecolor("black")
@@ -309,14 +335,31 @@ def createHumidityGraphDay():
     ax4.fill_between(
             (datetime(datetime.now().year, datetime.now().month, datetime.now().day, 0, 0, 0), currentTime), 0,
             100, facecolor='orange', alpha=0.2)
+    ax4.fill_between(times_today_second, humidity_today_second, color="teal", alpha=0.1)
     ax4.set_frame_on(False)
-    ax4.plot(timesToday, humidityToday)
+    ax4.plot(times_today_first, humidityToday, label="Luftfeuchte 1", linewidth=2.5)
+    ax4.plot(times_today_second, humidity_today_second, color="teal", label="Luftfeuchte 2", linestyle="--", linewidth=2.5)
+    legend = ax4.legend(fontsize=16)
+    legend.get_frame().set_facecolor("#F0F8FF")
     ax4.xaxis.set_major_formatter(mdates.DateFormatter("%H:%M"))
-    fig4.patch.set_facecolor('#F0F8FF')
-    ax4.set_facecolor('#F0F8FF')
+    #fig4.patch.set_facecolor('#F0F8FF')
+    #ax4.set_facecolor('#F0F8FF')
     figure = FigureCanvasTkAgg(fig4, master=graph_frame)
     return figure, ax4, fig4
 
+
+def read_file():
+    filename = "C:\\Users\\Chris\\Documents\\Semester_8\\Bundesgartenschau\\allgemeine-informationen.txt"
+    try:
+        with open(filename, "r", encoding="utf-8") as file:
+            content = str(file.read())
+            textInformation.delete("1.0", tk.END)
+            textInformation.insert(tk.END, content)
+            textInformation.tag_configure("left_align", justify="left")
+            textInformation.tag_add("left_align", "1.0", tk.END)
+    except FileNotFoundError:
+        textInformation.delete("1.0", tk.END)
+        textInformation.insert(tk.END, "..")
 
 
 # Date Information
@@ -331,9 +374,13 @@ print(date_last_week.strftime('%Y-%m-%d'))
 urlCurrent = "https://stadtklimaanalyse-mannheim.de/wp-json/climate-data/v1/current/288"
 dataCurrent = requests.get(urlCurrent).json()
 
-# Data Request
+# Data Request Station 288
 url = f"https://stadtklimaanalyse-mannheim.de/wp-json/climate-data/v1/historic/288/{date_last_week.strftime('%Y-%m-%d')}/{today_date.strftime('%Y-%m-%d')}"
 data = requests.get(url).json()
+
+# Data Request Station 287
+urlSecond = f"https://stadtklimaanalyse-mannheim.de/wp-json/climate-data/v1/historic/287/{date_last_week.strftime('%Y-%m-%d')}/{today_date.strftime('%Y-%m-%d')}"
+dataSecond = requests.get(url).json()
 
 utci = None
 
@@ -341,9 +388,10 @@ utci = None
 root = tk.Tk()
 root.config(background="white")
 
-root.attributes("-fullscreen", True)
+#root.attributes("-fullscreen", True)
 screen_width = root.winfo_screenwidth()
 screen_height = root.winfo_screenheight()
+#4096, 2160
 root.geometry(f"{screen_width}x{screen_height}")
 
 left_width_pct = 0.5
@@ -369,7 +417,7 @@ header_visualization.pack(side="top", padx=10, pady=10)
 # Video
 my_label = tk.Label(videoFrame, justify="left")
 my_label.pack()
-player = tkvideo("/home/buga/wetter-screen/pictures/sample.mp4", my_label, loop=1, size=(864, 486))
+player = tkvideo("C:\\Users\\Chris\\Documents\\Semester_8\\Bundesgartenschau\\sample.mp4", my_label, loop=1, size=(1280,720))
 player.play()
 
 # Frame Information
@@ -380,11 +428,12 @@ informationFrame.pack(side="top", fill="both", expand=True, padx=10, pady=10)
 header_information = tk.Label(informationFrame, text='Allgemeine Informationen', justify="left", font=custom_font, bg='#F0F8FF', fg='black')
 header_information.pack(side="top", padx=10, pady=10)
 
-# Text Information
 information = "Für Fragen und Informationen werden an folgenden Tagen Mitarbeiter des ReGrow Projektes zur Verfügung stehen:\n- 22.06. (Fokus:Mikroklima)\n- .."
 
-text_information = tk.Label(informationFrame, text=information, justify="left", font=("Arial", 11), bg='#F0F8FF', fg='black')
-text_information.pack(side="top", padx=10, pady=10)
+textInformation = tk.Text(informationFrame, font=("Arial", 24), bg='#F0F8FF', fg='black', height=10, width=80, borderwidth=0, highlightthickness=0)
+textInformation.pack(side="top")
+textInformation.insert("1.0", information, "left")
+read_file()
 
 ######################################
 
@@ -394,20 +443,28 @@ rightFrame.pack(side="right", fill="both", expand=True)
 
 
 # Right-Left Frame
-graph_frame = tk.Frame(rightFrame, bg="#F0F8FF")
+graph_frame = tk.Frame(rightFrame, bg="white")
 graph_frame.pack(side="left", fill="both", expand=True, padx=10, pady=10)
 
 # Value Format
 date_format = '%Y-%m-%dT%H:%M:%SZ'
 
 # Values of Temperatures
-timesToday = []
-temperaturesToday =[]
+times_today_first = []
+times_today_second = []
+temperatures_today_first = []
+times_today_second = []
+temperatures_today_second = []
 humidityToday = []
+humidity_today_second = []
 times = []
+times_second = []
 timesMatplotlib = []
+times_matplotlib_second = []
 humidity = []
+humidity_second = []
 temperatures = []
+temperatures_second = []
 minutesOverThirty = 0
 
 delta = timedelta(hours=2)
@@ -419,10 +476,22 @@ for element in data["data"]:
     if (float(data["data"][element]["t2m_med"]) > 30):
         minutesOverThirty += 1
     if rightTime >= (datetime(datetime.now().year, datetime.now().month, datetime.now().day, 0, 0, 0)):
-        timesToday.append(rightTime)
-        temperaturesToday.append(float(data["data"][element]["t2m_med"]))
+        times_today_first.append(rightTime)
+        temperatures_today_first.append(float(data["data"][element]["t2m_med"]))
         humidityToday.append(float(data["data"][element]["rf_med"]))
     humidity.append(float(data["data"][element]["rf_med"]))
+
+for element in dataSecond["data"]:
+    rightTime = datetime.strptime(str(element), date_format) + delta
+    times_second.append(rightTime)
+    temperatures_second.append(float(dataSecond["data"][element]["t2m_med"]) + 5)
+    if (float(data["data"][element]["t2m_med"]) > 30):
+        minutesOverThirty += 1
+    if rightTime >= (datetime(datetime.now().year, datetime.now().month, datetime.now().day, 0, 0, 0)):
+        times_today_second.append(rightTime)
+        temperatures_today_second.append(float(dataSecond["data"][element]["t2m_med"]) + 5)
+        humidity_today_second.append(float(dataSecond["data"][element]["rf_med"]) - 5)
+    humidity_second.append(float(dataSecond["data"][element]["rf_med"]) - 5)
 
 currentTemperature = temperatures[len(temperatures) - 1]
 #test = datetime.strptime(str(times[len(times) - 1]), date_format)
@@ -431,37 +500,20 @@ print(currentTime)
 if(currentTime < (datetime.now() - timedelta(minutes=40))):
     currentTemperature = "--"
     utci = "--"
-#print(times)
-#print(timesMatplotlib)
-#print(temperatures)
-#print(humidity)
 
 
 # Header "Informationen zum Mikroklima dieses Pavillions"
-header_climate = tk.Label(graph_frame, text='Informationen zum Mikroklima dieses Pavillons', font=custom_font, bg='#F0F8FF', fg='black', anchor="w")
+header_climate = tk.Label(graph_frame, text='Informationen zum Mikroklima dieses Pavillons', font=custom_font, bg='white', fg='black', anchor="w")
 header_climate.pack(side="top", padx=10, pady=10)
 
-#Right Frame Information
-#graph_frame_text = tk.Frame(graph_frame)
-#graph_frame_text.pack(side="left")
-
-# Frame for Temperature
-#temperature_frame = tk.Frame(graph_frame)
-#temperature_frame.pack(side="right", fill="both", expand=True)
-
 #Frame for Information
-informationGraphs = tk.Frame(graph_frame, bg='#F0F8FF')
+informationGraphs = tk.Frame(graph_frame, bg='white')
 informationGraphs.pack(side="top")
 
 informationHumidity = None
 informationTemperature = None
 updateFacts()
 
-
-# Values of Graph 1
-x = np.linspace(0, 1, 10)
-y1 = np.cos(x)
-y2 = np.sin(x)
 
 counter = 0
 temperatureGraphDay = createTemperatureGraphDay()
@@ -480,6 +532,7 @@ toggleGraphs()
 #TODO: Clear plots maybe
 
 UTCIFrame = None
+UTCIBuffer = None
 textUTCI = None
 UTCIImage = None
 UTCIArrow = None
