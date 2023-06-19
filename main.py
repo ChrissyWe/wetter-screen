@@ -167,12 +167,12 @@ def updateUTCI():
     canvas = tk.Canvas(UTCIBuffer, width=int((264) + 10 + 45), height=int((1753) + 20), bg='#F0F8FF', highlightthickness=0)
     canvas.pack(side="top")
 
-    UTCIImage = tk.PhotoImage(file="C:\\Users\\Chris\\Documents\\Semester_8\\Bundesgartenschau\\UTCI-Chart.png")
+    UTCIImage = tk.PhotoImage(file="/home/buga/wetter-screen/pictures/UTCI-Chart.png")
     #UTCIImage = UTCIImage.subsample(2)  # Resize 1/2
     canvas.create_image(45, 10, anchor="nw", image=UTCIImage)
 
     # Draw Arrow with Text
-    UTCIArrow = tk.PhotoImage(file="C:\\Users\\Chris\\Documents\\Semester_8\\Bundesgartenschau\\UTCI-Arrow.png")
+    UTCIArrow = tk.PhotoImage(file="/home/buga/wetter-screen/pictures/UTCI-Arrow.png")
     #UTCIArrow = UTCIArrow.subsample(2)
     if utci == "--":
         utci = ""
@@ -349,7 +349,7 @@ def createHumidityGraphDay():
 
 
 def read_file():
-    filename = "C:\\Users\\Chris\\Documents\\Semester_8\\Bundesgartenschau\\allgemeine-informationen.txt"
+    filename = "/home/buga/wetter-screen/pictures/allgemeine-informationen.txt"
     try:
         with open(filename, "r", encoding="utf-8") as file:
             content = str(file.read())
@@ -417,7 +417,7 @@ header_visualization.pack(side="top", padx=10, pady=10)
 # Video
 my_label = tk.Label(videoFrame, justify="left")
 my_label.pack()
-player = tkvideo("C:\\Users\\Chris\\Documents\\Semester_8\\Bundesgartenschau\\sample.mp4", my_label, loop=1, size=(1280,720))
+player = tkvideo("/home/buga/wetter-screen/pictures/sample.mp4", my_label, loop=1, size=(1280,720))
 player.play()
 
 # Frame Information
