@@ -529,8 +529,6 @@ ax3 = None
 ax4 = None
 toggleGraphs()
 
-#TODO: Clear plots maybe
-
 UTCIFrame = None
 UTCIBuffer = None
 textUTCI = None
