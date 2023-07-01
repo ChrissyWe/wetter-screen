@@ -68,7 +68,7 @@ def updateData():
         updateUTCI()
 
     now = datetime.now()
-    if (datetime(now.year, now.month, now.day, 0, 25, 0) >= now) & (now >= datetime(now.year, now.month, now.day, 0, 20, 0)):
+    if (datetime(now.year, now.month, now.day, 0, 35, 0) >= now) & (now >= datetime(now.year, now.month, now.day, 0, 30, 0)):
         midnightProcedure()
         #humidityToday = []
 
