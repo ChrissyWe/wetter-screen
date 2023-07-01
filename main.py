@@ -101,8 +101,8 @@ def updateFacts():
     global heatWithSystem
     global minutesOverThirty
 
-    #if informationHumidity is not None:
-    #    informationHumidity.destroy()
+    if informationHumidity is not None:
+        informationHumidity.destroy()
 
     if informationTemperature is not None:
         informationTemperature.destroy()
@@ -337,10 +337,10 @@ def createHumidityGraphWeek():
         spine.set_linewidth(1)
     ax2.fill_between((datetime(datetime.now().year, datetime.now().month, datetime.now().day, 0, 0, 0), currentTime), 0,
                      100, facecolor='orange', alpha=0.2)
-    ax2.fill_between(times_second, humidity_second, color="teal", alpha=0.1)
+    #ax2.fill_between(times_second, humidity_second, color="teal", alpha=0.1)
     ax2.set_frame_on(False)
     ax2.plot(times, humidity, label="Luftfeuchte 1", linewidth=2.5)
-    ax2.plot(times_second, humidity_second, color="teal", label="Luftfeuchte 2", linestyle="--", linewidth=2.5)
+    #ax2.plot(times_second, humidity_second, color="teal", label="Luftfeuchte 2", linestyle="--", linewidth=2.5)
     legend = ax2.legend(fontsize=16)
     legend.get_frame().set_facecolor("#F0F8FF")
     ax2.xaxis.set_major_formatter(mdates.DateFormatter('%d.%m.'))
@@ -361,10 +361,10 @@ def createHumidityGraphDay():
     ax4.fill_between(
             (datetime(datetime.now().year, datetime.now().month, datetime.now().day, 0, 0, 0), currentTime), 0,
             100, facecolor='orange', alpha=0.2)
-    ax4.fill_between(times_today_second, humidity_today_second, color="teal", alpha=0.1)
+    #ax4.fill_between(times_today_second, humidity_today_second, color="teal", alpha=0.1)
     ax4.set_frame_on(False)
     ax4.plot(times_today_first, humidityToday, label="Luftfeuchte 1", linewidth=2.5)
-    ax4.plot(times_today_second, humidity_today_second, color="teal", label="Luftfeuchte 2", linestyle="--", linewidth=2.5)
+    #ax4.plot(times_today_second, humidity_today_second, color="teal", label="Luftfeuchte 2", linestyle="--", linewidth=2.5)
     legend = ax4.legend(fontsize=16)
     legend.get_frame().set_facecolor("#F0F8FF")
     ax4.xaxis.set_major_formatter(mdates.DateFormatter("%H:%M"))
@@ -485,19 +485,19 @@ times_today_second = [currentTime]
 temperatures_today_first = [currentTemperatureOutside]
 #times_today_second = []
 temperatures_today_second = [currentTemperatureCorridor]
-humidityToday = []
-humidity_today_second = []
-times = []
-times_second = []
-timesMatplotlib = []
-times_matplotlib_second = []
-humidity = []
-humidity_second = []
-temperatures = []
-temperatures_second = []
+#humidityToday = []
+#humidity_today_second = []
+times = [currentTime]
+times_second = [currentTime]
+#timesMatplotlib = []
+#times_matplotlib_second = []
+#humidity = []
+#humidity_second = []
+temperatures = [currentTemperatureOutside]
+temperatures_second = [currentTemperatureCorridor]
 minutesOverThirty = 0
 
-delta = timedelta(hours=2)
+#delta = timedelta(hours=2)
 
 #for element in data["data"]:
 #    rightTime = datetime.strptime(str(element), date_format) + delta
