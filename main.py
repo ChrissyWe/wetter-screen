@@ -22,7 +22,7 @@ def updateData():
     global humidity
     global temperatures
     global currentURL
-    global currentData
+   # global currentData
     global utci
     global minutesOverThirty
     global currentTemperatureOutside
@@ -48,7 +48,7 @@ def updateData():
         updateUTCI()
 
 
-    if(((datetime.strptime(str(currentData["measure_date"]), date_format)) + delta) == datetime(datetime.now().year, datetime.now().month, datetime.now().day, 0, 0, 0)):
+    if(datetime.now() == datetime(datetime.now().year, datetime.now().month, datetime.now().day, 0, 0, 0)):
         times_today_first = []
         temperatures_today_first = []
         #humidityToday = []
