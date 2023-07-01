@@ -8,6 +8,8 @@ import matplotlib.pyplot as plt
 import datetime as dt
 from datetime import datetime, timedelta
 import matplotlib.dates as mdates
+
+import SensorInformation
 import UTCI
 
 def updateData():
@@ -24,6 +26,9 @@ def updateData():
     global utci
     global minutesOverThirty
     global currentTemperature
+
+    newTime = datetime.today()
+    newTemperature = SensorInformation.getTemperature()
 
     currentURL = "https://stadtklimaanalyse-mannheim.de/wp-json/climate-data/v1/current/288"
     currentData = requests.get(urlCurrent).json()
@@ -45,24 +50,36 @@ def updateData():
         temperatures_today_first = []
         humidityToday = []
 
-    if((datetime.strptime(str(currentData["measure_date"]), date_format)) + delta != times[len(times) - 1]):
-        times.pop(0)
-        times.append(datetime.strptime(str(currentData["measure_date"]), date_format) + delta)
-        times_today_first.append(datetime.strptime(str(currentData["measure_date"]), date_format) + delta)
-        humidity.pop(0)
-        humidity.append(float(currentData["rf_med"]))
-        humidityToday.append(float(currentData["rf_med"]))
-        temperatures.pop(0)
-        newTemperature = float(currentData["t2m_med"])
-        if newTemperature > 30:
-            minutesOverThirty += 1
-            updateFacts()
-        temperatures.append(newTemperature)
-        temperatures_today_first.append(newTemperature)
-        print(datetime.strptime(str(currentData["measure_date"]), date_format) + delta)
-        if (currentTemperature != newTemperature):
-            currentTemperature = newTemperature
-            updateFacts()
+    times.append(newTime)
+    times_today_first.append(newTime)
+    temperatures.append(newTemperature)
+    temperatures_today_first.append(newTemperature)
+    if newTemperature > 30:
+        minutesOverThirty += 1
+        updateFacts()
+    if currentTemperature != newTemperature:
+        currentTemperature = newTemperature
+        updateFacts()
+
+    #if((datetime.strptime(str(currentData["measure_date"]), date_format)) + delta != times[len(times) - 1]):
+    #    times.pop(0)
+    #    times.append(datetime.strptime(str(currentData["measure_date"]), date_format) + delta)
+    #    times_today_first.append(datetime.strptime(str(currentData["measure_date"]), date_format) + delta)
+    #    humidity.pop(0)
+    #    humidity.append(float(currentData["rf_med"]))
+    #    humidityToday.append(float(currentData["rf_med"]))
+    #    temperatures.pop(0)
+    #    newTemperature = float(currentData["t2m_med"])
+    #    if newTemperature > 30:
+    #        minutesOverThirty += 1
+    #        updateFacts()
+    #    temperatures.append(newTemperature)
+    #    temperatures_today_first.append(newTemperature)
+    #    print(datetime.strptime(str(currentData["measure_date"]), date_format) + delta)
+    #    if (currentTemperature != newTemperature):
+    #        currentTemperature = newTemperature
+    #        updateFacts()
+
 
     root.after(100000, updateData)
 
@@ -469,37 +486,37 @@ minutesOverThirty = 0
 
 delta = timedelta(hours=2)
 
-for element in data["data"]:
-    rightTime = datetime.strptime(str(element), date_format) + delta
-    times.append(rightTime)
-    temperatures.append(float(data["data"][element]["t2m_med"]))
-    if (float(data["data"][element]["t2m_med"]) > 30):
-        minutesOverThirty += 1
-    if rightTime >= (datetime(datetime.now().year, datetime.now().month, datetime.now().day, 0, 0, 0)):
-        times_today_first.append(rightTime)
-        temperatures_today_first.append(float(data["data"][element]["t2m_med"]))
-        humidityToday.append(float(data["data"][element]["rf_med"]))
-    humidity.append(float(data["data"][element]["rf_med"]))
+#for element in data["data"]:
+#    rightTime = datetime.strptime(str(element), date_format) + delta
+#    times.append(rightTime)
+#    temperatures.append(float(data["data"][element]["t2m_med"]))
+#    if (float(data["data"][element]["t2m_med"]) > 30):
+#        minutesOverThirty += 1
+#    if rightTime >= (datetime(datetime.now().year, datetime.now().month, datetime.now().day, 0, 0, 0)):
+#        times_today_first.append(rightTime)
+#        temperatures_today_first.append(float(data["data"][element]["t2m_med"]))
+#        humidityToday.append(float(data["data"][element]["rf_med"]))
+#    humidity.append(float(data["data"][element]["rf_med"]))
 
-for element in dataSecond["data"]:
-    rightTime = datetime.strptime(str(element), date_format) + delta
-    times_second.append(rightTime)
-    temperatures_second.append(float(dataSecond["data"][element]["t2m_med"]) + 5)
-    if (float(data["data"][element]["t2m_med"]) > 30):
-        minutesOverThirty += 1
-    if rightTime >= (datetime(datetime.now().year, datetime.now().month, datetime.now().day, 0, 0, 0)):
-        times_today_second.append(rightTime)
-        temperatures_today_second.append(float(dataSecond["data"][element]["t2m_med"]) + 5)
-        humidity_today_second.append(float(dataSecond["data"][element]["rf_med"]) - 5)
-    humidity_second.append(float(dataSecond["data"][element]["rf_med"]) - 5)
+#for element in dataSecond["data"]:
+#    rightTime = datetime.strptime(str(element), date_format) + delta
+#    times_second.append(rightTime)
+#    temperatures_second.append(float(dataSecond["data"][element]["t2m_med"]) + 5)
+#    if (float(data["data"][element]["t2m_med"]) > 30):
+#        minutesOverThirty += 1
+#    if rightTime >= (datetime(datetime.now().year, datetime.now().month, datetime.now().day, 0, 0, 0)):
+#        times_today_second.append(rightTime)
+#        temperatures_today_second.append(float(dataSecond["data"][element]["t2m_med"]) + 5)
+#        humidity_today_second.append(float(dataSecond["data"][element]["rf_med"]) - 5)
+#    humidity_second.append(float(dataSecond["data"][element]["rf_med"]) - 5)
 
-currentTemperature = temperatures[len(temperatures) - 1]
+#currentTemperature = temperatures[len(temperatures) - 1]
 #test = datetime.strptime(str(times[len(times) - 1]), date_format)
-currentTime = (times[len(times) - 1])
-print(currentTime)
-if(currentTime < (datetime.now() - timedelta(minutes=40))):
-    currentTemperature = "--"
-    utci = "--"
+#currentTime = (times[len(times) - 1])
+#print(currentTime)
+#if(currentTime < (datetime.now() - timedelta(minutes=40))):
+#    currentTemperature = "--"
+#    utci = "--"
 
 
 # Header "Informationen zum Mikroklima dieses Pavillions"
