@@ -514,6 +514,7 @@ delta = timedelta(hours=2)
 #test = datetime.strptime(str(times[len(times) - 1]), date_format)
 #currentTime = (times[len(times) - 1])
 currentTime = datetime.today()
+currentTemperature = SensorInformation.getTemperature()
 #print(currentTime)
 #if(currentTime < (datetime.now() - timedelta(minutes=40))):
 #    currentTemperature = "--"
