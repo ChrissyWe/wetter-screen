@@ -8,9 +8,25 @@ import matplotlib.pyplot as plt
 import datetime as dt
 from datetime import datetime, timedelta
 import matplotlib.dates as mdates
+import DriveManagement
+import FileManagement
 
 import SensorInformation
 import UTCI
+
+def midnightProcedure():
+    global times_today_first
+    global times_today_second
+    global temperatures_today_first
+    global temperatures_today_second
+    DriveManagement.writeExcel()
+    FileManagement.create_csv()
+    times_today_first = [SensorInformation.getTemperatureOutside()]
+    times_today_second = [SensorInformation.getTemperatureCorridor()]
+    temperatures_today_first = [SensorInformation.getTemperatureOutside()]
+    temperatures_today_second = [SensorInformation.getTemperatureOutside()]
+    read_file()
+
 
 def updateData():
     # Current Request
@@ -31,6 +47,10 @@ def updateData():
     newTime = datetime.today()
     newTemperatureOutside = SensorInformation.getTemperatureOutside()
     newTemperatureCorridor = SensorInformation.getTemperatureCorridor()
+    if newTemperatureOutside > 30:
+        minutesOverThirty += 1
+        updateFacts()
+    FileManagement.import_values_to_csv(newTime, newTemperatureOutside, newTemperatureCorridor, minutesOverThirty)
 
     #currentURL = "https://stadtklimaanalyse-mannheim.de/wp-json/climate-data/v1/current/288"
     #currentData = requests.get(urlCurrent).json()
@@ -47,12 +67,16 @@ def updateData():
         utci = newUTCI
         updateUTCI()
 
-
-    if(datetime.now() == datetime(datetime.now().year, datetime.now().month, datetime.now().day, 0, 0, 0)):
-        times_today_first = [SensorInformation.getTemperatureOutside()]
-        temperatures_today_first = [SensorInformation.getTemperatureCorridor()]
+    now = datetime.now()
+    if (datetime(now.year, now.month, now.day, 0, 15, 0) >= now) & (now >= datetime(now.year, now.month, now.day, 0, 13, 0)):
+        midnightProcedure()
         #humidityToday = []
 
+    if(times[0] >= (datetime.now() - timedelta(minutes=10))):
+        times.pop(0)
+        times_second.pop(0)
+        temperatures.pop(0)
+        temperatures_second.pop(0)
     times.append(newTime)
     times_second.append(newTime)
     times_today_first.append(newTime)
@@ -91,7 +115,7 @@ def updateData():
     #        updateFacts()
 
 
-    root.after(10000, updateData)
+    root.after(60000, updateData)
 
 
 def updateFacts():
@@ -195,12 +219,12 @@ def updateUTCI():
     canvas = tk.Canvas(UTCIBuffer, width=int((264) + 10 + 45), height=int((1753) + 20), bg='#F0F8FF', highlightthickness=0)
     canvas.pack(side="top")
 
-    UTCIImage = tk.PhotoImage(file="/home/buga/wetter-screen/pictures/UTCI-Chart.png")
+    UTCIImage = tk.PhotoImage(file="/wetter-screen/pictures/UTCI-Chart.png")
     #UTCIImage = UTCIImage.subsample(2)  # Resize 1/2
     canvas.create_image(45, 10, anchor="nw", image=UTCIImage)
 
     # Draw Arrow with Text
-    UTCIArrow = tk.PhotoImage(file="/home/buga/wetter-screen/pictures/UTCI-Arrow.png")
+    UTCIArrow = tk.PhotoImage(file="/wetter-screen/pictures/UTCI-Arrow.png")
     #UTCIArrow = UTCIArrow.subsample(2)
     if utci == "--":
         utci = ""
@@ -284,6 +308,7 @@ def createTemperatureGraphWeek():
     #fig1.text(0.5, 0.97, "diese Woche", fontsize=32, fontweight='bold', ha='right')
     ax1.set_ylabel("Temperatur", fontsize=16)
     ax1.set_xlabel("Datum", fontsize=16)
+    ax1.set_xlim(times[0], currentTime)
     ax1.tick_params(colors="black")
     for spine in ax1.spines.values():
         spine.set_edgecolor("black")
@@ -309,6 +334,7 @@ def createTemperatureGraphDay():
     ax3.set_title('Temperaturen heute', color="black", fontsize=28)
     ax3.set_ylabel("Temperatur", fontsize=16)
     ax3.set_xlabel("Uhrzeit", fontsize=16)
+    ax3.set_xlim(times_today_first[0], currentTime)
     ax3.tick_params(colors="black")
     for spine in ax3.spines.values():
         spine.set_edgecolor("black")
@@ -377,17 +403,12 @@ def createHumidityGraphDay():
 
 
 def read_file():
-    filename = "/home/buga/wetter-screen/pictures/allgemeine-informationen.txt"
-    try:
-        with open(filename, "r", encoding="utf-8") as file:
-            content = str(file.read())
-            textInformation.delete("1.0", tk.END)
-            textInformation.insert(tk.END, content)
-            textInformation.tag_configure("left_align", justify="left")
-            textInformation.tag_add("left_align", "1.0", tk.END)
-    except FileNotFoundError:
-        textInformation.delete("1.0", tk.END)
-        textInformation.insert(tk.END, "..")
+    global driveManager
+    generalInformation = DriveManagement.getContent()
+    textInformation.delete("1.0", tk.END)
+    textInformation.insert(tk.END, generalInformation)
+    textInformation.tag_configure("left_align", justify="left")
+    textInformation.tag_add("left_align", "1.0", tk.END)
 
 
 # Date Information
@@ -445,7 +466,7 @@ header_visualization.pack(side="top", padx=10, pady=10)
 # Video
 my_label = tk.Label(videoFrame, justify="left")
 my_label.pack()
-player = tkvideo("/home/buga/wetter-screen/pictures/sample.mp4", my_label, loop=1, size=(1280,720))
+player = tkvideo("/wetter-screen/pictures/sample.mp4", my_label, loop=1, size=(1280,720))
 player.play()
 
 # Frame Information
