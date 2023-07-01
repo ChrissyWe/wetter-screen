@@ -49,8 +49,8 @@ def updateData():
 
 
     if(datetime.now() == datetime(datetime.now().year, datetime.now().month, datetime.now().day, 0, 0, 0)):
-        times_today_first = []
-        temperatures_today_first = []
+        times_today_first = [SensorInformation.getTemperatureOutside()]
+        temperatures_today_first = [SensorInformation.getTemperatureCorridor()]
         #humidityToday = []
 
     times.append(newTime)
@@ -63,10 +63,10 @@ def updateData():
         minutesOverThirty += 1
         updateFacts()
     if currentTemperatureOutside != newTemperatureOutside:
-        currentTemperature = newTemperatureOutside
+        currentTemperatureOutside = newTemperatureOutside
         updateFacts()
     if currentTemperatureCorridor != newTemperatureCorridor:
-        currentTemperature = newTemperatureCorridor
+        currentTemperatureCorridor = newTemperatureCorridor
         updateFacts()
 
     #if((datetime.strptime(str(currentData["measure_date"]), date_format)) + delta != times[len(times) - 1]):
