@@ -25,17 +25,20 @@ def updateData():
     global currentData
     global utci
     global minutesOverThirty
-    global currentTemperature
+    global currentTemperatureOutside
+    global currentTemperatureCorridor
 
     newTime = datetime.today()
-    newTemperature = SensorInformation.getTemperature()
+    newTemperatureOutside = SensorInformation.getTemperatureOutside()
+    newTemperatureCorridor = SensorInformation.getTemperatureCorridor()
 
-    currentURL = "https://stadtklimaanalyse-mannheim.de/wp-json/climate-data/v1/current/288"
-    currentData = requests.get(urlCurrent).json()
+    #currentURL = "https://stadtklimaanalyse-mannheim.de/wp-json/climate-data/v1/current/288"
+    #currentData = requests.get(urlCurrent).json()
 
-    newUTCI = round(UTCI.universal_thermal_climate_index(float(currentData["t2m_med"]), float(currentData["t2m_med"]),
-                                                      float(currentData["wg_med"]), float(currentData["rf_med"])), 1)
-    #newUTCI = 38
+    #newUTCI = round(UTCI.universal_thermal_climate_index(float(currentData["t2m_med"]), float(currentData["t2m_med"]),
+    #                                                  float(currentData["wg_med"]), float(currentData["rf_med"])), 1)
+
+    newUTCI = 18
 
     if (utci == None):
         utci = newUTCI
@@ -48,17 +51,22 @@ def updateData():
     if(((datetime.strptime(str(currentData["measure_date"]), date_format)) + delta) == datetime(datetime.now().year, datetime.now().month, datetime.now().day, 0, 0, 0)):
         times_today_first = []
         temperatures_today_first = []
-        humidityToday = []
+        #humidityToday = []
 
     times.append(newTime)
     times_today_first.append(newTime)
-    temperatures.append(newTemperature)
-    temperatures_today_first.append(newTemperature)
-    if newTemperature > 30:
+    temperatures.append(newTemperatureOutside)
+    temperatures_second.append(newTemperatureCorridor)
+    temperatures_today_first.append(newTemperatureOutside)
+    temperatures_today_second.append(newTemperatureCorridor)
+    if newTemperatureOutside > 30:
         minutesOverThirty += 1
         updateFacts()
-    if currentTemperature != newTemperature:
-        currentTemperature = newTemperature
+    if currentTemperatureOutside != newTemperatureOutside:
+        currentTemperature = newTemperatureOutside
+        updateFacts()
+    if currentTemperatureCorridor != newTemperatureCorridor:
+        currentTemperature = newTemperatureCorridor
         updateFacts()
 
     #if((datetime.strptime(str(currentData["measure_date"]), date_format)) + delta != times[len(times) - 1]):
@@ -81,7 +89,7 @@ def updateData():
     #        updateFacts()
 
 
-    root.after(100000, updateData)
+    root.after(10000, updateData)
 
 
 def updateFacts():
@@ -92,8 +100,8 @@ def updateFacts():
     global heatWithSystem
     global minutesOverThirty
 
-    if informationHumidity is not None:
-        informationHumidity.destroy()
+    #if informationHumidity is not None:
+    #    informationHumidity.destroy()
 
     if informationTemperature is not None:
         informationTemperature.destroy()
@@ -107,15 +115,15 @@ def updateFacts():
     informationHumidity.pack(side="right", padx=10, pady=10)
 
     # Text above Graph
-    current = f"Aktuelle Temperatur außen: {currentTemperature} °C\nAktuelle Temperatur in Sprühanlage 1: {currentTemperature} °C"
+    current = f"Aktuelle Temperatur außen: {currentTemperatureOutside} °C\nAktuelle Temperatur in Sprühanlage: {currentTemperatureCorridor} °C"
 
     text_temperatures = tk.Text(informationTemperature, font=("Arial", 24), bg='white', fg='black', height=2,
                                 width=50, borderwidth=0, highlightthickness=0)
     text_temperatures.pack(side="top")
     text_temperatures.insert("1.0", current)
 
-    start_index = text_temperatures.search(str(currentTemperature) + " °C", "1.0", stopindex=tk.END)
-    second_occurrence_index = text_temperatures.search(str(currentTemperature), f"{start_index}+1c", stopindex=tk.END)
+    start_index = text_temperatures.search(str(currentTemperatureOutside) + " °C", "1.0", stopindex=tk.END)
+    second_occurrence_index = text_temperatures.search(str(currentTemperatureCorridor), f"{start_index}+1c", stopindex=tk.END)
     end_index = f"{start_index}+{len(str(currentTemperature)) + 3}c"
     text_temperatures.tag_configure("blue", foreground="blue", font=("Arial", 24, "bold"))
     text_temperatures.tag_add("blue", start_index, end_index)
@@ -235,22 +243,22 @@ def toggleGraphs():
         plt.close(figTemperature)
         currentGraphTemperature.get_tk_widget().destroy()
 
-    if currentGraphHumidity is not None:
-        axHumidity.clear()
-        plt.close(figHumidity)
-        currentGraphHumidity.get_tk_widget().destroy()
+    #if currentGraphHumidity is not None:
+    #    axHumidity.clear()
+    #    plt.close(figHumidity)
+    #    currentGraphHumidity.get_tk_widget().destroy()
 
     if counter == 0:
         figureTemperature, axTemperature, figTemperature = createTemperatureGraphWeek()
         currentGraphTemperature = figureTemperature
-        figureHumidity, axHumidity, figHumidity = createHumidityGraphWeek()
-        currentGraphHumidity = figureHumidity
+        #figureHumidity, axHumidity, figHumidity = createHumidityGraphWeek()
+        #currentGraphHumidity = figureHumidity
         counter = 1
     else:
         figureTemperature, axTemperature, figTemperature = createTemperatureGraphDay()
         currentGraphTemperature = figureTemperature
-        figureHumidity, axHumidity, figHumidity = createHumidityGraphDay()
-        currentGraphHumidity = figureHumidity
+        #figureHumidity, axHumidity, figHumidity = createHumidityGraphDay()
+        #currentGraphHumidity = figureHumidity
         counter = 0
 
     #graphFrameTemperature = tk.Frame(informationGraphs, bg="green")
@@ -259,7 +267,7 @@ def toggleGraphs():
 
     #graphFrameHumidity = tk.Frame(informationGraphs, bg="green")
     #graphFrameHumidity.pack(side="top", fill="both", expand=True)
-    currentGraphHumidity.get_tk_widget().pack(side="top", fill="both", expand=True)
+    #currentGraphHumidity.get_tk_widget().pack(side="top", fill="both", expand=True)
 
     root.after(15000, toggleGraphs)
 
@@ -388,16 +396,16 @@ print(today_date.strftime('%Y-%m-%d'))
 print(date_last_week.strftime('%Y-%m-%d'))
 
 # Current Request
-urlCurrent = "https://stadtklimaanalyse-mannheim.de/wp-json/climate-data/v1/current/288"
-dataCurrent = requests.get(urlCurrent).json()
+#urlCurrent = "https://stadtklimaanalyse-mannheim.de/wp-json/climate-data/v1/current/288"
+#dataCurrent = requests.get(urlCurrent).json()
 
 # Data Request Station 288
-url = f"https://stadtklimaanalyse-mannheim.de/wp-json/climate-data/v1/historic/288/{date_last_week.strftime('%Y-%m-%d')}/{today_date.strftime('%Y-%m-%d')}"
-data = requests.get(url).json()
+#url = f"https://stadtklimaanalyse-mannheim.de/wp-json/climate-data/v1/historic/288/{date_last_week.strftime('%Y-%m-%d')}/{today_date.strftime('%Y-%m-%d')}"
+#data = requests.get(url).json()
 
 # Data Request Station 287
-urlSecond = f"https://stadtklimaanalyse-mannheim.de/wp-json/climate-data/v1/historic/287/{date_last_week.strftime('%Y-%m-%d')}/{today_date.strftime('%Y-%m-%d')}"
-dataSecond = requests.get(url).json()
+#urlSecond = f"https://stadtklimaanalyse-mannheim.de/wp-json/climate-data/v1/historic/287/{date_last_week.strftime('%Y-%m-%d')}/{today_date.strftime('%Y-%m-%d')}"
+#dataSecond = requests.get(url).json()
 
 utci = None
 
@@ -466,12 +474,16 @@ graph_frame.pack(side="left", fill="both", expand=True, padx=10, pady=10)
 # Value Format
 date_format = '%Y-%m-%dT%H:%M:%SZ'
 
+currentTime = datetime.today()
+currentTemperatureOutside = SensorInformation.getTemperatureOutside()
+currentTemperatureCorridor = SensorInformation.getTemperatureCorridor()
+
 # Values of Temperatures
-times_today_first = []
-times_today_second = []
-temperatures_today_first = []
-times_today_second = []
-temperatures_today_second = []
+times_today_first = [currentTime]
+times_today_second = [currentTime]
+temperatures_today_first = [currentTemperatureOutside]
+#times_today_second = []
+temperatures_today_second = [currentTemperatureCorridor]
 humidityToday = []
 humidity_today_second = []
 times = []
@@ -513,8 +525,6 @@ delta = timedelta(hours=2)
 #currentTemperature = temperatures[len(temperatures) - 1]
 #test = datetime.strptime(str(times[len(times) - 1]), date_format)
 #currentTime = (times[len(times) - 1])
-currentTime = datetime.today()
-currentTemperature = SensorInformation.getTemperature()
 #print(currentTime)
 #if(currentTime < (datetime.now() - timedelta(minutes=40))):
 #    currentTemperature = "--"
@@ -537,8 +547,8 @@ updateFacts()
 counter = 0
 temperatureGraphDay = createTemperatureGraphDay()
 temperatureGraphWeek = createTemperatureGraphWeek()
-humidityGraphDay = createHumidityGraphDay()
-humidityGraphWeek = createHumidityGraphWeek()
+#humidityGraphDay = createHumidityGraphDay()
+#humidityGraphWeek = createHumidityGraphWeek()
 
 currentGraphHumidity = None
 currentGraphTemperature = None
