@@ -25,8 +25,8 @@ def getContent():
 	gauth = GoogleAuth(settings_file='/wetter-screen/driveData/settings.yaml')
 	# gauth.DEFAULT_SETTINGS['client_config_file'] = 'C:\\Users\\Chris\\Documents\\Semester_8\\Bundesgartenschau\\Credentials.json'
 	drive = GoogleDrive(gauth)
-	file7 = drive.CreateFile({'id': '1MUtalibYpvJ1FBHQGzDC4wEW19xL0wZw'})
-	content = file7.GetContentString()
+	file = drive.CreateFile({'id': '1MUtalibYpvJ1FBHQGzDC4wEW19xL0wZw'})
+	content = file.GetContentString()
 	return content
 
 #file = drive.CreateFile({'id': '1NggFkhUZ1LmAEObTvGU7H9sfLc9QKW-B'})

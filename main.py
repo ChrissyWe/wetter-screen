@@ -10,6 +10,8 @@ from datetime import datetime, timedelta
 import matplotlib.dates as mdates
 import DriveManagement
 import FileManagement
+from pydrive.auth import GoogleAuth
+from pydrive.drive import GoogleDrive
 
 import SensorInformation
 import UTCI
@@ -403,8 +405,10 @@ def createHumidityGraphDay():
 
 
 def read_file():
-    global driveManager
-    generalInformation = DriveManagement.getContent()
+    gauth = GoogleAuth(settings_file='/wetter-screen/driveData/settings.yaml')
+    drive = GoogleDrive(gauth)
+    file = drive.CreateFile({'id': '1MUtalibYpvJ1FBHQGzDC4wEW19xL0wZw'})
+    generalInformation = file.GetContentString()
     textInformation.delete("1.0", tk.END)
     textInformation.insert(tk.END, generalInformation)
     textInformation.tag_configure("left_align", justify="left")
