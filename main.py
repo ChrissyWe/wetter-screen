@@ -54,7 +54,9 @@ def updateData():
         #humidityToday = []
 
     times.append(newTime)
+    times_second.append(newTime)
     times_today_first.append(newTime)
+    times_today_second.append(newTime)
     temperatures.append(newTemperatureOutside)
     temperatures_second.append(newTemperatureCorridor)
     temperatures_today_first.append(newTemperatureOutside)
