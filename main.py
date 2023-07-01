@@ -513,6 +513,7 @@ delta = timedelta(hours=2)
 #currentTemperature = temperatures[len(temperatures) - 1]
 #test = datetime.strptime(str(times[len(times) - 1]), date_format)
 #currentTime = (times[len(times) - 1])
+currentTime = datetime.today()
 #print(currentTime)
 #if(currentTime < (datetime.now() - timedelta(minutes=40))):
 #    currentTemperature = "--"
