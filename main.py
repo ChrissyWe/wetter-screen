@@ -95,7 +95,8 @@ def updateData():
 def updateFacts():
     global informationTemperature
     global informationHumidity
-    global currentTemperature
+    global currentTemperatureOutside
+    global currentTemperatureCorridor
     global heatWithoutSystem
     global heatWithSystem
     global minutesOverThirty
@@ -124,13 +125,13 @@ def updateFacts():
 
     start_index = text_temperatures.search(str(currentTemperatureOutside) + " °C", "1.0", stopindex=tk.END)
     second_occurrence_index = text_temperatures.search(str(currentTemperatureCorridor), f"{start_index}+1c", stopindex=tk.END)
-    end_index = f"{start_index}+{len(str(currentTemperature)) + 3}c"
+    end_index = f"{start_index}+{len(str(currentTemperatureCorridor)) + 3}c"
     text_temperatures.tag_configure("blue", foreground="blue", font=("Arial", 24, "bold"))
     text_temperatures.tag_add("blue", start_index, end_index)
 
     text_temperatures.tag_configure("blue", foreground="blue", font=("Arial", 24, "bold"))
     text_temperatures.tag_add("blue", second_occurrence_index,
-                              f"{second_occurrence_index}+{len(str(currentTemperature)) + 3}c")
+                              f"{second_occurrence_index}+{len(str(currentTemperatureCorridor)) + 3}c")
 
     heatWithSystem = "0 h"
     heatWithoutSystem = str(int(minutesOverThirty / 6)) + " h"
