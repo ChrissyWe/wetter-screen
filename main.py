@@ -19,10 +19,12 @@ import SensorInformation
 import UTCI
 
 def midnightProcedure():
+    global currentTime
     global times_today_first
     global times_today_second
     global temperatures_today_first
     global temperatures_today_second
+    currentTime=datetime.now()
     #DriveManagement.writeExcel()
     FileManagement.create_csv(datetime.today().date() + timedelta(days=1))
     times_today_first = [SensorInformation.getTemperatureOutside()]
@@ -47,8 +49,10 @@ def updateData():
     global minutesOverThirty
     global currentTemperatureOutside
     global currentTemperatureCorridor
+    global currentTime
 
     newTime = datetime.today()
+    currentTime = datetime.now()
     newTemperatureOutside = SensorInformation.getTemperatureOutside()
     newTemperatureCorridor = SensorInformation.getTemperatureCorridor()
     if newTemperatureOutside > 30:
@@ -72,7 +76,7 @@ def updateData():
         updateUTCI()
 
     now = datetime.now()
-    if (datetime(now.year, now.month, now.day, 13, 10, 0) >= now) & (now >= datetime(now.year, now.month, now.day, 13, 3, 0)):
+    if (datetime(now.year, now.month, now.day, 13, 20, 0) >= now) & (now >= datetime(now.year, now.month, now.day, 13, 15, 0)):
         midnightProcedure()
         #humidityToday = []
 
