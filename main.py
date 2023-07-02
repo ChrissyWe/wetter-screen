@@ -3,6 +3,7 @@ from tkinter import font
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 import numpy as np
 from tkvideo import tkvideo
+from tkVideoPlayer import TkinterVideo
 import requests
 import matplotlib.pyplot as plt
 import datetime as dt
@@ -10,7 +11,7 @@ from datetime import datetime, timedelta
 import matplotlib.dates as mdates
 import DriveManagement
 import FileManagement
-import pyglet
+#import pyglet
 from pydrive.auth import GoogleAuth
 from pydrive.drive import GoogleDrive
 
@@ -470,11 +471,10 @@ header_visualization.pack(side="top", padx=10, pady=10)
 # Video
 my_label = tk.Label(videoFrame, justify="left")
 my_label.pack()
-player = pyglet.media.Player()
-source = pyglet.media.StreamingSource()
-media = pyglet.media.load("/home/buga/wetter-screen/pictures/sample.mp4")
-player.queue(media)
-#player = tkvideo.TkinterVideo("/home/buga/wetter-screen/pictures/sample.mp4", my_label, loop=1, size=(1280,720))
+
+player = TkinterVideo(master = videoFrame, scaled=True)
+player.load("/home/buga/wetter-screen/pictures/sample.mp4", my_label, loop=1, size=(1280,720))
+player.pack(expand=True, fill="both")
 player.play()
 
 # Frame Information
