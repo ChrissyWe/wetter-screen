@@ -411,6 +411,7 @@ def read_file():
     textInformation.tag_configure("left_align", justify="left")
     textInformation.tag_add("left_align", "1.0", tk.END)
 
+FileManagement.create_csv()
 
 # Date Information
 today_date = datetime.today()
