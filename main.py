@@ -472,8 +472,8 @@ header_visualization.pack(side="top", padx=10, pady=10)
 my_label = tk.Label(videoFrame, justify="left")
 my_label.pack()
 
-player = TkinterVideo(master = videoFrame, scaled=True)
-player.load("/home/buga/wetter-screen/pictures/sample.mp4", my_label, loop=1, size=(1280,720))
+player = TkinterVideo(master=my_label, scaled=True)
+player.load("/home/buga/wetter-screen/pictures/sample.mp4")
 player.pack(expand=True, fill="both")
 player.play()
 
