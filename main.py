@@ -10,6 +10,7 @@ from datetime import datetime, timedelta
 import matplotlib.dates as mdates
 import DriveManagement
 import FileManagement
+import pyglet
 from pydrive.auth import GoogleAuth
 from pydrive.drive import GoogleDrive
 
@@ -469,7 +470,11 @@ header_visualization.pack(side="top", padx=10, pady=10)
 # Video
 my_label = tk.Label(videoFrame, justify="left")
 my_label.pack()
-player = tkvideo("/home/buga/wetter-screen/pictures/sample.mp4", my_label, loop=1, size=(1280,720))
+player = pyglet.media.Player()
+source = pyglet.media.StreamingSource()
+media = pyglet.media.load("/home/buga/wetter-screen/pictures/sample.mp4")
+player.queue(media)
+#player = tkvideo.TkinterVideo("/home/buga/wetter-screen/pictures/sample.mp4", my_label, loop=1, size=(1280,720))
 player.play()
 
 # Frame Information
