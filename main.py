@@ -26,7 +26,7 @@ def midnightProcedure():
     global temperatures_today_second
     currentTime = datetime.now()
     #DriveManagement.writeExcel()
-    FileManagement.create_csv(datetime.today().date() + timedelta(days=1))
+    FileManagement.create_csv(datetime.today().date())
     times_today_first = [currentTime]
     times_today_second = [currentTime]
     temperatures_today_first = [SensorInformation.getTemperatureOutside()]
@@ -60,11 +60,11 @@ def updateData():
         updateFacts()
     FileManagement.import_values_to_csv(newTime, newTemperatureOutside, newTemperatureCorridor, minutesOverThirty)
 
-    #currentURL = "https://stadtklimaanalyse-mannheim.de/wp-json/climate-data/v1/current/288"
-    #currentData = requests.get(urlCurrent).json()
+    currentURL = "https://stadtklimaanalyse-mannheim.de/wp-json/climate-data/v1/current/288"
+    currentData = requests.get(currentURL).json()
 
-    #newUTCI = round(UTCI.universal_thermal_climate_index(float(currentData["t2m_med"]), float(currentData["t2m_med"]),
-    #                                                  float(currentData["wg_med"]), float(currentData["rf_med"])), 1)
+    newUTCI = round(UTCI.universal_thermal_climate_index(float(currentData["t2m_med"]), float(currentData["t2m_med"]),
+                                                      float(currentData["wg_med"]), float(currentData["rf_med"])), 1)
 
     newUTCI = 18
 
@@ -76,7 +76,7 @@ def updateData():
         updateUTCI()
 
     now = datetime.now()
-    if (datetime(now.year, now.month, now.day, 14, 6, 0) >= times_today_first[len(times_today_first) - 1] >= datetime(now.year, now.month, now.day, 14, 5, 0)):
+    if (datetime(now.year, now.month, now.day, 0, 5, 0) >= times_today_first[len(times_today_first) - 1] >= datetime(now.year, now.month, now.day, 0, 0, 0)):
         midnightProcedure()
         #humidityToday = []
 
@@ -123,7 +123,7 @@ def updateData():
     #        updateFacts()
 
 
-    root.after(10000, updateData)
+    root.after(300000, updateData)
 
 
 def updateFacts():
