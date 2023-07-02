@@ -80,7 +80,7 @@ def updateData():
     #    midnightProcedure()
         #humidityToday = []
 
-    if(times[0] >= (datetime.now() - timedelta(minutes=10))):
+    if(times[0] <= (datetime.now() - timedelta(minutes=10))):
         times.pop(0)
         times_second.pop(0)
         temperatures.pop(0)
