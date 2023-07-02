@@ -58,7 +58,11 @@ def updateData():
     if newTemperatureOutside > 30:
         minutesOverThirty += 1
         updateFacts()
+
     FileManagement.import_values_to_csv(newTime, newTemperatureOutside, newTemperatureCorridor, minutesOverThirty)
+
+    newTemperatureOutside = round(newTemperatureOutside, 1)
+    newTemperatureCorridor = round(newTemperatureCorridor, 1)
 
     currentURL = "https://stadtklimaanalyse-mannheim.de/wp-json/climate-data/v1/current/288"
     currentData = requests.get(currentURL).json()
@@ -66,7 +70,6 @@ def updateData():
     newUTCI = round(UTCI.universal_thermal_climate_index(float(currentData["t2m_med"]), float(currentData["t2m_med"]),
                                                       float(currentData["wg_med"]), float(currentData["rf_med"])), 1)
 
-    newUTCI = 18
 
     if (utci == None):
         utci = newUTCI
