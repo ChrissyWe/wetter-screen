@@ -24,7 +24,7 @@ def midnightProcedure():
     global temperatures_today_first
     global temperatures_today_second
     #DriveManagement.writeExcel()
-    FileManagement.create_csv()
+    FileManagement.create_csv(datetime.today().date() + timedelta(days=1))
     times_today_first = [SensorInformation.getTemperatureOutside()]
     times_today_second = [SensorInformation.getTemperatureCorridor()]
     temperatures_today_first = [SensorInformation.getTemperatureOutside()]
@@ -72,7 +72,7 @@ def updateData():
         updateUTCI()
 
     now = datetime.now()
-    if (datetime(now.year, now.month, now.day, 13, 10, 0) >= now) & (now >= datetime(now.year, now.month, now.day, 12, 55, 0)):
+    if (datetime(now.year, now.month, now.day, 13, 10, 0) >= now) & (now >= datetime(now.year, now.month, now.day, 13, 3, 0)):
         midnightProcedure()
         #humidityToday = []
 
@@ -423,7 +423,7 @@ print(today_date)
 print(today_date.strftime('%Y-%m-%d'))
 print(date_last_week.strftime('%Y-%m-%d'))
 
-FileManagement.create_csv()
+FileManagement.create_csv(datetime.today().date())
 # Current Request
 #urlCurrent = "https://stadtklimaanalyse-mannheim.de/wp-json/climate-data/v1/current/288"
 #dataCurrent = requests.get(urlCurrent).json()

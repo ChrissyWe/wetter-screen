@@ -4,12 +4,12 @@ import pandas as pd
 from datetime import datetime, timedelta
 import os
 
-def create_csv():
-    if(os.path.exists(f"/home/buga/Data/{datetime.today().date()}_Temperatures.csv")):
+def create_csv(date):
+    if(os.path.exists(f"/home/buga/Data/{date}_Temperatures.csv")):
         return
     else:
         csv = pd.DataFrame(columns = ["Uhrzeit", "Temperatur_aussen", "Temperatur_spruehanlage", "ueber_30_C"])
-        csv.to_csv(f"/home/buga/Data/{datetime.today().date() + timedelta(days=1)}_Temperatures.csv", sep=";", index = False)
+        csv.to_csv(f"/home/buga/Data/{date}_Temperatures.csv", sep=";", index = False)
     #csv.to_csv(f"/wetter-screen/Data/Temperatur_{datum}.csv", sep = ";")
 
 def import_values_to_csv(time, temperatureOutside, temperatureCorridor, above30):
