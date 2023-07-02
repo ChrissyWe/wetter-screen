@@ -24,7 +24,7 @@ def midnightProcedure():
     global times_today_second
     global temperatures_today_first
     global temperatures_today_second
-    currentTime=datetime.now()
+    currentTime = datetime.now()
     #DriveManagement.writeExcel()
     FileManagement.create_csv(datetime.today().date() + timedelta(days=1))
     times_today_first = [SensorInformation.getTemperatureOutside()]
@@ -76,8 +76,8 @@ def updateData():
         updateUTCI()
 
     now = datetime.now()
-    if (datetime(now.year, now.month, now.day, 13, 20, 0) >= now) & (now >= datetime(now.year, now.month, now.day, 13, 15, 0)):
-        midnightProcedure()
+    #if (datetime(now.year, now.month, now.day, 13, 20, 0) >= now) & (now >= datetime(now.year, now.month, now.day, 13, 15, 0)):
+    #    midnightProcedure()
         #humidityToday = []
 
     if(times[0] >= (datetime.now() - timedelta(minutes=10))):
@@ -123,7 +123,7 @@ def updateData():
     #        updateFacts()
 
 
-    root.after(60000, updateData)
+    root.after(10000, updateData)
 
 
 def updateFacts():
