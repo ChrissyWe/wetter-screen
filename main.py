@@ -21,13 +21,13 @@ def midnightProcedure():
     global times_today_second
     global temperatures_today_first
     global temperatures_today_second
-    DriveManagement.writeExcel()
+    #DriveManagement.writeExcel()
     FileManagement.create_csv()
     times_today_first = [SensorInformation.getTemperatureOutside()]
     times_today_second = [SensorInformation.getTemperatureCorridor()]
     temperatures_today_first = [SensorInformation.getTemperatureOutside()]
     temperatures_today_second = [SensorInformation.getTemperatureOutside()]
-    read_file()
+    #read_file()
 
 
 def updateData():
@@ -405,10 +405,7 @@ def createHumidityGraphDay():
 
 
 def read_file():
-    gauth = GoogleAuth(settings_file='/wetter-screen/driveData/settings.yaml')
-    drive = GoogleDrive(gauth)
-    file = drive.CreateFile({'id': '1MUtalibYpvJ1FBHQGzDC4wEW19xL0wZw'})
-    generalInformation = file.GetContentString()
+    generalInformation = "TODO"
     textInformation.delete("1.0", tk.END)
     textInformation.insert(tk.END, generalInformation)
     textInformation.tag_configure("left_align", justify="left")
