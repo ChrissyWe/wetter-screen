@@ -135,7 +135,7 @@ def updateData():
         utci = "--"
 
 
-    root.after(60000, updateData)
+    root.after(30000, updateData)
 
 
 def updateFacts():
