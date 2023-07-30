@@ -310,6 +310,8 @@ def comfortable(u):
     elif u >= 26:
         return ("moderate heat stress")
 
+def calculateRadiantTemperature(tg, va, ta):
+    return ((tg+273)**4+((1.1*(10**8)*(va**0.6))/(0.95*5))*(tg-ta))**0.25 - 273
 
 def saturated_vapor_pressure_hpa(db_temp):
     """Calculate saturated vapor pressure (hPa) at temperature (C).
