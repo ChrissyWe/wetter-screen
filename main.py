@@ -731,12 +731,12 @@ text_frame = tk.Frame(root, bg="white")
 text_frame.pack(side="left", fill="both", expand=True)
 
 # Frame MP4
-#videoFrame = tk.Frame(text_frame, bg="#F0F8FF")
-#videoFrame.pack(side="top", fill="both", expand=True, padx=10, pady=10)
+videoFrame = tk.Frame(text_frame, bg="#F0F8FF")
+videoFrame.pack(side="top", fill="both", expand=True, padx=10, pady=10)
 
 # Header "Visualisierungen zu Planung und Fertigung"
-#header_visualization = tk.Label(videoFrame, text='Visualisierungen zu Planung und Fertigung', justify="left", font=custom_font, bg='#F0F8FF', fg='black')
-#header_visualization.pack(side="top", padx=10, pady=10)
+header_visualization = tk.Label(videoFrame, text='Visualisierungen zu Planung und Fertigung', justify="left", font=custom_font, bg='#F0F8FF', fg='black')
+header_visualization.pack(side="top", padx=10, pady=10)
 
 # Video
 my_label = tk.Label(videoFrame, justify="left")
