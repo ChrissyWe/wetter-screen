@@ -125,9 +125,10 @@ def updateData():
     else:
         currentJData = "--"
 
-    currentTemperatureReference = float(currentJData["t2m_med"])
-    currentHumidityReference = float(currentJData["rf_med"])
-    currentTimes = dt.datetime.strptime(currentJData["measure_date"], date_format) + timedelta(hours=2)
+    if currentJData != "--":
+        currentTemperatureReference = float(currentJData["t2m_med"])
+        currentHumidityReference = float(currentJData["rf_med"])
+        currentTimes = dt.datetime.strptime(currentJData["measure_date"], date_format) + timedelta(hours=2)
 
     if (currentJData != "--") & (currentTimes != timesReference[len(timesReference) - 1]) & (currentTemperatureReference < 50) & (currentHumidityReference <= 100):
         timesReference.pop(0)
