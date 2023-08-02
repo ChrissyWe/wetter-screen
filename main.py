@@ -259,7 +259,7 @@ def updateData():
     #     updateUTCI()
 
     now = datetime.now()
-    if (datetime(now.year, now.month, now.day, 13, 40, 0) >= timesTodayFirst[len(timesTodayFirst) - 1] >= datetime(now.year, now.month, now.day, 13, 30, 0)):
+    if (datetime(now.year, now.month, now.day, 00, 10, 0) >= timesTodayFirst[len(timesTodayFirst) - 1] >= datetime(now.year, now.month, now.day, 0, 0, 0)):
         midnightProcedure()
 
     if currentTemperatureReference > 30:
@@ -480,7 +480,7 @@ def createTemperatureGraphWeek():
     ax1.set_frame_on(False)
     ax1.plot(times, temperatures, color="firebrick", label="Temperatur im Sprühnebelbereich 1", linewidth=2.5)
     ax1.plot(timesSecond, temperaturesSecond, color="#f8686a", label="Temperatur im Sprühnebelbereich 2", linestyle="--", linewidth=2.5)
-    ax1.plot(timesReference, temperatureReference, color="black", label="Wetterstation des Bundesgartenschau", linewidth=1)
+    ax1.plot(timesReference, temperatureReference, color="black", label="Wetterstation der Bundesgartenschau", linewidth=1)
     legend = ax1.legend(fontsize=16)
     legend.get_frame().set_facecolor("#F0F8FF")
     ax1.xaxis.set_major_formatter(mdates.DateFormatter('%d.%m.'))
@@ -508,7 +508,7 @@ def createTemperatureGraphDay():
     ax3.set_frame_on(False)
     ax3.plot(timesTodayFirst, temperaturesTodayFirst, color="firebrick", label="Temperatur im Srühnebelbereich 1", linewidth=2.5)
     ax3.plot(timesTodaySecond, temperaturesTodaySecond, color="#f8686a", label="Temperatur im Sprühnebelbereich 2", linestyle="--", linewidth=2.5)
-    ax3.plot(timesReferenceToday, temperatureReferenceToday, color="black", label="Wetterstation des Bundesgartenschau", linewidth=1)
+    ax3.plot(timesReferenceToday, temperatureReferenceToday, color="black", label="Wetterstation der Bundesgartenschau", linewidth=1)
     legend = ax3.legend(fontsize=16)
     legend.get_frame().set_facecolor("#F0F8FF")
     #fig3.patch.set_facecolor('#F0F8FF')
