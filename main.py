@@ -270,8 +270,11 @@ def updateData():
         currentTemperatureReference = "--"
         utci = "--"
 
-    print(currentTimeTempSec)
-    print(currentTemperatureFirstSec)
+    print("---")
+    print(times)
+    print(timesTodayFirst)
+    print(temperatures)
+    print(currentTemperatureReference)
     blocking = False
 
     root.after(600000, updateData)
@@ -748,7 +751,6 @@ temperaturesTodaySecond = temperaturesTodaySecond[::-1]
 humiditySecond = humiditySecond[::-1]
 humidityTodaySecond = humidityTodaySecond[::-1]
 
-print(currentTemperatureMist)
 
 timesHumiditySecond = timesHumiditySecond[::-1]
 timesSecond = timesSecond[::-1]
@@ -798,12 +800,12 @@ my_label.pack()
 player = tkvideo("/home/buga/wetter-screen/pictures/sample.mp4", my_label, loop=1, size=(1280, 720))
 player.play()
 
-canvas = tk.Canvas(videoFrame, width=int((264) + 10 + 45), height=int((1753) + 20), bg='#F0F8FF', highlightthickness=0)
+canvas = tk.Canvas(videoFrame, width=int(2000), height=int(1125), bg='#F0F8FF', highlightthickness=0)
 canvas.pack(side="top")
 
 logoImage = tk.PhotoImage(file="/home/buga/wetter-screen/pictures/Logos.png")
-logoImage = logoImage.subsample(2)  # Resize 1/2
-canvas.create_image(1280, 720, anchor="nw", image=logoImage)
+#logoImage = logoImage.subsample(2)  # Resize 1/2
+canvas.create_image(10, 20, anchor="nw", image=logoImage)
 
 # Frame Information
 informationFrame = tk.Frame(text_frame, bg="#F0F8FF")

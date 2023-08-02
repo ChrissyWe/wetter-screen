@@ -25,7 +25,9 @@ def import_values_to_csv(time, temperatureOutside, temperatureCorridor, above30)
     dataframe.loc[act_index, "Temperatur_15m"] = temperatureCorridor
     dataframe.loc[act_index, "ueber_30_C"] = above30
     dataframe.to_csv(f"/home/buga/Data/{datetime.today().date()}_Temperatures.csv",  sep=";", index = False)
-    if (datetime(now.year, now.month, now.day, 21, 45, 0) >= time >= datetime(now.year, now.month, now.day, 21, 44, 0)):
+    if (datetime(now.year, now.month, now.day, 0, 0, 0) >= time >= datetime(now.year, now.month, now.day, 0, 1, 0)):
+        sendMail()
+    elif (datetime(now.year, now.month, now.day, 12, 0, 0) >= time >= datetime(now.year, now.month, now.day, 12, 1, 0)):
         sendMail()
 
 
