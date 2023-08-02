@@ -803,7 +803,7 @@ canvas.pack(side="top")
 
 logoImage = tk.PhotoImage(file="/home/buga/wetter-screen/pictures/Logos.png")
 logoImage = logoImage.subsample(2)  # Resize 1/2
-canvas.create_image(45, 10, anchor="nw", image=logoImage)
+canvas.create_image(1280, 720, anchor="nw", image=logoImage)
 
 # Frame Information
 informationFrame = tk.Frame(text_frame, bg="#F0F8FF")
