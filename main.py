@@ -802,7 +802,7 @@ canvas = tk.Canvas(videoFrame, width=int((264) + 10 + 45), height=int((1753) + 2
 canvas.pack(side="top")
 
 logoImage = tk.PhotoImage(file="/home/buga/wetter-screen/pictures/Logos.png")
-UTCIImage = UTCIImage.subsample(2)  # Resize 1/2
+logoImage = logoImage.subsample(2)  # Resize 1/2
 canvas.create_image(45, 10, anchor="nw", image=logoImage)
 
 # Frame Information
