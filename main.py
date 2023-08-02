@@ -70,7 +70,7 @@ def updateDataSensor():
     # newTemperatureFifteen = SensorInformation.getTemperatureOutside()
     # newTemperatureTwenty = SensorInformation.getTemperatureCorridor()
     FileManagement.import_values_to_csv(currentTime, newTemperatureFifteen, newTemperatureTwenty, minutesOverThirty)
-    root.after(60000, updateData)
+    root.after(60000, updateDataSensor)
 
 
 def updateData():
