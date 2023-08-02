@@ -232,15 +232,15 @@ def updateData():
         #newUTCI = round(UTCI.universal_thermal_climate_index(float(currentTemperatureMist), float(radiantTemperature),
         #                                                  float(windVelocity), float(currentData["rf_med"])))
         #print(newUTCI)
-    else:
-        newUTCI = "--"
-
-    if (utci == None):
-        utci = newUTCI
-        updateUTCI()
-    elif (utci != newUTCI):
-        utci = newUTCI
-        updateUTCI()
+    # else:
+    #     newUTCI = "--"
+    #
+    # if (utci == None):
+    #     utci = newUTCI
+    #     updateUTCI()
+    # elif (utci != newUTCI):
+    #     utci = newUTCI
+    #     updateUTCI()
 
     now = datetime.now()
     if (datetime(now.year, now.month, now.day, 13, 40, 0) >= timesTodayFirst[len(timesTodayFirst) - 1] >= datetime(now.year, now.month, now.day, 13, 30, 0)):
