@@ -119,7 +119,10 @@ def updateData():
     #newTemperatureOutside = round(newTemperatureOutside, 1)
     #newTemperatureCorridor = round(newTemperatureCorridor, 1)
 
-    currentData = requests.get(currentURL)
+    try:
+        currentData = requests.get(currentURL)
+    except requests.RequestException as e:
+        print("Fehler bei der Anfrage:", e)
 
     if currentData.status_code == 200:
         currentJData = currentData.json()
@@ -142,9 +145,20 @@ def updateData():
         humidityReference.append(currentHumidityReference)
         humidityReferenceToday.append(currentHumidityReference)
 
-    windSensorFirstCurrent = requests.get(urlCurrentWind, headers=headers)
-    windSensorSecondCurrent = requests.get(urlCurrentWindSecond, headers=headers)
-    airSensor = requests.get(urlCurrentAir, headers=headers)
+    try:
+        windSensorFirstCurrent = requests.get(urlCurrentWind, headers=headers)
+    except requests.RequestException as e:
+        print("Fehler bei der Anfrage:", e)
+
+    try:
+        windSensorSecondCurrent = requests.get(urlCurrentWindSecond, headers=headers)
+    except requests.RequestException as e:
+        print("Fehler bei der Anfrage:", e)
+
+    try:
+        airSensor = requests.get(urlCurrentAir, headers=headers)
+    except requests.RequestException as e:
+        print("Fehler bei der Anfrage:", e)
 
     if windSensorFirstCurrent.status_code == 200:
         dataWindSensorFirstCurrent = windSensorFirstCurrent.json()
@@ -584,7 +598,11 @@ blocking = False
 # Data Request Station 288
 stationURL = f"https://stadtklimaanalyse-mannheim.de/wp-json/climate-data/v1/historic/292/{date_last_week.strftime('%Y-%m-%d')}/{today_date.strftime('%Y-%m-%d')}"
 currentURL = "https://stadtklimaanalyse-mannheim.de/wp-json/climate-data/v1/current/292"
-data = requests.get(stationURL)
+
+try:
+    data = requests.get(stationURL)
+except requests.RequestException as e:
+    print("Fehler bei der Anfrage:", e)
 
 if data.status_code == 200:
     stationData = data.json()
@@ -621,10 +639,31 @@ urlCurrentAirSecond = "https://api.mvvsmartcities.com/v3/device/timeseries?devic
 
 utci = None
 
-windSensorFirstWeek = requests.get(urlWindSensor1, headers=headers)
-windSensorSecondWeek = requests.get(urlWindSensor2, headers=headers)
-airSensorFirstWeek = requests.get(urlAirSensor1, headers=headers)
-airSensorSecondWeek = requests.get(urlAirSensor2, headers=headers)
+
+try:
+    windSensorFirstWeek = requests.get(urlWindSensor1, headers=headers)
+except requests.RequestException as e:
+    print("Fehler bei der Anfrage:", e)
+
+
+try:
+    windSensorSecondWeek = requests.get(urlWindSensor2, headers=headers)
+except requests.RequestException as e:
+    print("Fehler bei der Anfrage:", e)
+
+
+try:
+    airSensorFirstWeek = requests.get(urlAirSensor1, headers=headers)
+except requests.RequestException as e:
+    print("Fehler bei der Anfrage:", e)
+
+
+try:
+    airSensorSecondWeek = requests.get(urlAirSensor2, headers=headers)
+except requests.RequestException as e:
+    print("Fehler bei der Anfrage:", e)
+
+
 
 if windSensorFirstWeek.status_code == 200:
     dataWindSensorFirstWeek = windSensorFirstWeek.json()
