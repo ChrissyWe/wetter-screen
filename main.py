@@ -70,6 +70,7 @@ def updateDataSensor():
     # newTemperatureFifteen = SensorInformation.getTemperatureOutside()
     # newTemperatureTwenty = SensorInformation.getTemperatureCorridor()
     FileManagement.import_values_to_csv(currentTime, newTemperatureFifteen, newTemperatureTwenty, minutesOverThirty)
+    root.after(60000, updateData)
 
 
 def updateData():
@@ -819,6 +820,7 @@ textUTCI = None
 UTCIImage = None
 UTCIArrow = None
 updateData()
+updateDataSensor()
 
 # Main loop
 root.mainloop()
