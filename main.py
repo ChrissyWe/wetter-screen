@@ -221,12 +221,12 @@ def updateData():
             timesHumidityTodaySecond.append(currentTimeHumiditySec)
             humidityTodaySecond.append(currentHumidityFirstSec)
 
-    if dataAirSensor is not None:
-        for item in dataAirSensor:
-            if item["deviceId"] == '0004A30B0103B729':
-                for time_series in item["timeSeries"]:
-                    if time_series["timeSeriesId"] == 'fe1864e8-6f73-45f0-86a8-1253a7182e98':
-                        windVelocity = time_series["values"][0]
+    # if dataAirSensor is not None:
+    #     for item in dataAirSensor:
+    #         if item["deviceId"] == '0004A30B0103B729':
+    #             for time_series in item["timeSeries"]:
+    #                 if time_series["timeSeriesId"] == 'fe1864e8-6f73-45f0-86a8-1253a7182e98':
+    #                     windVelocity = time_series["values"][0]
 
         #radiantTemperature = UTCI.calculateRadiantTemperature(15, windVelocity, currentTemperatureMist)
         #newUTCI = round(UTCI.universal_thermal_climate_index(float(currentTemperatureMist), float(radiantTemperature),
