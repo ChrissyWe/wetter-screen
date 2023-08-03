@@ -801,11 +801,11 @@ my_label.pack()
 player = tkvideo("/home/buga/wetter-screen/pictures/sample.mp4", my_label, loop=1, size=(1280, 720))
 player.play()
 
-canvas = tk.Canvas(videoFrame, width=int(2000), height=int(1125), bg='#F0F8FF', highlightthickness=0)
+canvas = tk.Canvas(videoFrame, width=int(2000/2), height=int(1125/2), bg='#F0F8FF', highlightthickness=0)
 canvas.pack(side="top")
 
 logoImage = tk.PhotoImage(file="/home/buga/wetter-screen/pictures/Logos.png")
-#logoImage = logoImage.subsample(2)  # Resize 1/2
+logoImage = logoImage.subsample(2)  # Resize 1/2
 canvas.create_image(10, 20, anchor="nw", image=logoImage)
 
 # Frame Information
