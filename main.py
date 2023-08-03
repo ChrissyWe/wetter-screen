@@ -261,7 +261,8 @@ def updateData():
     # elif (utci != newUTCI):
     #     utci = newUTCI
     #     updateUTCI()
-
+    utci = "--"
+    updateUTCI()
     now = datetime.now()
     if (datetime(now.year, now.month, now.day, 00, 10, 0) >= timesTodayFirst[len(timesTodayFirst) - 1] >= datetime(now.year, now.month, now.day, 0, 0, 0)):
         midnightProcedure()
