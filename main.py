@@ -795,12 +795,13 @@ header_visualization.pack(side="top", padx=10, pady=10)
 
 # Video
 my_label = tk.Label(videoFrame, justify="left")
+my_label.pack()
 
+time.sleep(5)
 
 #player = tkvideo(r"C:\Users\Chris\PycharmProjects\pythonProject\pictures\sample.mp4", my_label, loop=1, size=(1280, 720))
 player = tkvideo("/home/buga/wetter-screen/pictures/sample.mp4", my_label, loop=1, size=(1280, 720))
 player.play()
-my_label.pack()
 
 # Frame Information
 informationFrame = tk.Frame(text_frame, bg="#F0F8FF")
