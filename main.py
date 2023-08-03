@@ -794,7 +794,7 @@ header_visualization = tk.Label(videoFrame, text='Visualisierungen zu Planung un
 header_visualization.pack(side="top", padx=10, pady=10)
 
 # Video
-my_label = tk.Label(videoFrame, justify="left")
+my_label = tk.Label(text_frame, justify="left")
 my_label.pack()
 
 time.sleep(5)
