@@ -67,8 +67,8 @@ def updateDataSensor():
     currentTime = datetime.now()
     newTemperatureFifteen = 14
     newTemperatureTwenty = 13
-    # newTemperatureFifteen = SensorInformation.getTemperatureOutside()
-    # newTemperatureTwenty = SensorInformation.getTemperatureCorridor()
+    newTemperatureFifteen = SensorInformation.getTemperatureOutside()
+    newTemperatureTwenty = SensorInformation.getTemperatureCorridor()
     FileManagement.import_values_to_csv(currentTime, newTemperatureFifteen, newTemperatureTwenty, minutesOverThirty)
     root.after(60000, updateDataSensor)
 
@@ -270,16 +270,11 @@ def updateData():
         minutesOverThirty += 1
         updateFacts()
 
+
     if (currentTimes < (datetime.now() - timedelta(minutes=40))):
         currentTemperatureReference = "--"
 
-
-
-    print("---")
-    print(times)
-    print(timesTodayFirst)
-    print(temperatures)
-    print(currentTemperatureReference)
+    updateFacts()
     blocking = False
 
     root.after(600000, updateData)
@@ -828,8 +823,8 @@ graph_frame.pack(side="left", fill="both", expand=True, padx=10, pady=10)
 date_format = '%Y-%m-%dT%H:%M:%SZ'
 
 currentTime = datetime.today()
-#currentTemperatureFifteen = SensorInformation.getTemperatureOutside()
-#currentTemperatureTwenty = SensorInformation.getTemperatureCorridor()
+currentTemperatureFifteen = SensorInformation.getTemperatureOutside()
+currentTemperatureTwenty = SensorInformation.getTemperatureCorridor()
 
 
 
