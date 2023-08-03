@@ -795,22 +795,23 @@ header_visualization.pack(side="top", padx=10, pady=10)
 
 # Video
 my_label = tk.Label(videoFrame, justify="left")
-my_label.pack()
+
 
 #player = tkvideo(r"C:\Users\Chris\PycharmProjects\pythonProject\pictures\sample.mp4", my_label, loop=1, size=(1280, 720))
 player = tkvideo("/home/buga/wetter-screen/pictures/sample.mp4", my_label, loop=1, size=(1280, 720))
 player.play()
+my_label.pack()
 
 # Frame Information
 informationFrame = tk.Frame(text_frame, bg="#F0F8FF")
 informationFrame.pack(side="top", fill="both", expand=True, padx=10, pady=10)
 
-# canvas = tk.Canvas(informationFrame, width=int(2000/2), height=int(1125/2), bg='#F0F8FF', highlightthickness=0)
-# canvas.pack(side="top")
-#
-# logoImage = tk.PhotoImage(file="/home/buga/wetter-screen/pictures/Logos.png")
-# #logoImage = logoImage.subsample(2)  # Resize 1/2
-# canvas.create_image(10, 20, anchor="nw", image=logoImage)
+canvas = tk.Canvas(informationFrame, width=int(2000/2), height=int(1125/2), bg='#F0F8FF', highlightthickness=0)
+canvas.pack(side="top")
+
+logoImage = tk.PhotoImage(file="/home/buga/wetter-screen/pictures/Logos.png")
+logoImage = logoImage.subsample(2)  # Resize 1/2
+canvas.create_image(10, 20, anchor="nw", image=logoImage)
 
 #--- Right Frame ---#
 rightFrame = tk.Frame(root, bg="white")
