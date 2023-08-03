@@ -1,3 +1,4 @@
+import threading
 import tkinter as tk
 import urllib
 from tkinter import font
@@ -575,6 +576,8 @@ def read_file():
     #textInformation.tag_configure("left_align", justify="left")
     #textInformation.tag_add("left_align", "1.0", tk.END)
 
+def play_video():
+    player = tkvideo.play("/home/buga/wetter-screen/pictures/sample.mp4", window=my_label, loop=1, size=(1280, 720))
 
 
 #----------- Get Information -----------#
@@ -797,9 +800,12 @@ header_visualization.pack(side="top", padx=10, pady=10)
 my_label = tk.Label(videoFrame, justify="left")
 my_label.pack()
 
+video_thread = threading.Thread(target=play_video)
+video_thread.start()
+
 #player = tkvideo(r"C:\Users\Chris\PycharmProjects\pythonProject\pictures\sample.mp4", my_label, loop=1, size=(1280, 720))
-player = tkvideo("/home/buga/wetter-screen/pictures/sample.mp4", my_label, loop=1, size=(1280, 720))
-player.play()
+#player = tkvideo("/home/buga/wetter-screen/pictures/sample.mp4", my_label, loop=1, size=(1280, 720))
+#player.play()
 
 # Frame Information
 informationFrame = tk.Frame(text_frame, bg="#F0F8FF")
