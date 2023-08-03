@@ -1,3 +1,4 @@
+import threading
 import tkinter as tk
 import urllib
 from tkinter import font
@@ -463,6 +464,9 @@ def toggleGraphs():
 
     root.after(15000, toggleGraphs)
 
+def play_video():
+    player = tkvideo("/home/buga/wetter-screen/pictures/sample.mp4", my_label, loop=1, size=(1280, 720))
+    player.play()
 
 def createTemperatureGraphWeek():
     # Graph 1 (Temperature - Week)
@@ -797,9 +801,12 @@ header_visualization.pack(side="top", padx=10, pady=10)
 my_label = tk.Label(videoFrame, justify="left")
 my_label.pack()
 
-#player = tkvideo(r"C:\Users\Chris\PycharmProjects\pythonProject\pictures\sample.mp4", my_label, loop=1, size=(1280, 720))
-player = tkvideo("/home/buga/wetter-screen/pictures/sample.mp4", my_label, loop=1, size=(1280, 720))
-player.play()
+# #player = tkvideo(r"C:\Users\Chris\PycharmProjects\pythonProject\pictures\sample.mp4", my_label, loop=1, size=(1280, 720))
+# player = tkvideo("/home/buga/wetter-screen/pictures/sample.mp4", my_label, loop=1, size=(1280, 720))
+# player.play()
+
+video_thread = threading.Thread(target=play_video)
+video_thread.start()
 
 # Frame Information
 informationFrame = tk.Frame(text_frame, bg="#F0F8FF")
