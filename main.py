@@ -2,6 +2,8 @@ import threading
 import tkinter as tk
 import urllib
 from tkinter import font
+
+import cv2
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 from tkvideo import tkvideo
 import requests
@@ -465,8 +467,25 @@ def toggleGraphs():
     root.after(15000, toggleGraphs)
 
 def play_video():
-    player = tkvideo("/home/buga/wetter-screen/pictures/sample.mp4", my_label, loop=1, size=(1280, 720))
-    player.play()
+    cap = cv2.VideoCapture("/home/buga/wetter-screen/pictures/sample.mp4")
+
+    while True:
+        ret, frame = cap.read()
+        if not ret:
+            break
+
+        # Convert the frame to RGB format for Tkinter
+        frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+
+        # Update the label image with the new frame
+        img = tk.PhotoImage(data=cv2.imencode('.ppm', frame)[1].tobytes())
+        my_label.config(image=img)
+        my_label.image = img
+
+        # Adjust this value to control the video playback speed
+        root.after(30, lambda: None)
+
+    cap.release()
 
 def createTemperatureGraphWeek():
     # Graph 1 (Temperature - Week)
