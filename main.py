@@ -805,12 +805,12 @@ player.play()
 informationFrame = tk.Frame(text_frame, bg="#F0F8FF")
 informationFrame.pack(side="top", fill="both", expand=True, padx=10, pady=10)
 
-canvas = tk.Canvas(informationFrame, width=int(2000/2), height=int(1125/2), bg='#F0F8FF', highlightthickness=0)
-canvas.pack(side="top")
-
-logoImage = tk.PhotoImage(file="/home/buga/wetter-screen/pictures/Logos.png")
-#logoImage = logoImage.subsample(2)  # Resize 1/2
-canvas.create_image(10, 20, anchor="nw", image=logoImage)
+# canvas = tk.Canvas(informationFrame, width=int(2000/2), height=int(1125/2), bg='#F0F8FF', highlightthickness=0)
+# canvas.pack(side="top")
+#
+# logoImage = tk.PhotoImage(file="/home/buga/wetter-screen/pictures/Logos.png")
+# #logoImage = logoImage.subsample(2)  # Resize 1/2
+# canvas.create_image(10, 20, anchor="nw", image=logoImage)
 
 #--- Right Frame ---#
 rightFrame = tk.Frame(root, bg="white")
