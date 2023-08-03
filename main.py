@@ -208,6 +208,10 @@ def updateData():
             timesHumidityTodayFirst.append(currentHumidityFirst)
             humidityToday.append(currentHumidityFirst)
 
+        if (currentJData != "--") & (currentTimeTemp < (datetime.now() - timedelta(minutes=40))):
+            currentTemperatureMist = "--"
+            utci = "--"
+
     if dataWindSensorSecondCurrent is not None:
         for item in dataWindSensorSecondCurrent:
             if item["deviceId"] == '0004A30B00F7CD19':
@@ -266,9 +270,10 @@ def updateData():
         minutesOverThirty += 1
         updateFacts()
 
-    if (currentTime < (datetime.now() - timedelta(minutes=40))):
+    if (currentTimes < (datetime.now() - timedelta(minutes=40))):
         currentTemperatureReference = "--"
-        utci = "--"
+
+
 
     print("---")
     print(times)
@@ -764,7 +769,7 @@ FileManagement.create_csv(datetime.today().date())
 # Main-Window
 root = tk.Tk()
 root.config(background="white")
-#root.attributes("-fullscreen", True)
+root.attributes("-fullscreen", True)
 screen_width = root.winfo_screenwidth()
 screen_height = root.winfo_screenheight()
 #4096, 2160
