@@ -793,16 +793,6 @@ videoFrame.pack(side="top", fill="both", expand=True, padx=10, pady=10)
 header_visualization = tk.Label(videoFrame, text='Visualisierungen zu Planung und Fertigung', justify="left", font=custom_font, bg='#F0F8FF', fg='black')
 header_visualization.pack(side="top", padx=10, pady=10)
 
-# Video
-my_label = tk.Label(text_frame, justify="left")
-my_label.pack()
-
-time.sleep(5)
-
-#player = tkvideo(r"C:\Users\Chris\PycharmProjects\pythonProject\pictures\sample.mp4", my_label, loop=1, size=(1280, 720))
-player = tkvideo("/home/buga/wetter-screen/pictures/sample.mp4", my_label, loop=1, size=(1280, 720))
-player.play()
-
 # Frame Information
 informationFrame = tk.Frame(text_frame, bg="#F0F8FF")
 informationFrame.pack(side="top", fill="both", expand=True, padx=10, pady=10)
@@ -872,6 +862,14 @@ UTCIImage = None
 UTCIArrow = None
 updateData()
 updateDataSensor()
+
+# Video
+my_label = tk.Label(videoFrame, justify="left")
+my_label.pack()
+
+#player = tkvideo(r"C:\Users\Chris\PycharmProjects\pythonProject\pictures\sample.mp4", my_label, loop=1, size=(1280, 720))
+player = tkvideo("/home/buga/wetter-screen/pictures/sample.mp4", my_label, loop=1, size=(1280, 720))
+player.play()
 
 # Main loop
 root.mainloop()
