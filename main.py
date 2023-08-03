@@ -1,9 +1,6 @@
-import threading
 import tkinter as tk
 import urllib
 from tkinter import font
-
-import cv2
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 from tkvideo import tkvideo
 import requests
@@ -466,26 +463,6 @@ def toggleGraphs():
 
     root.after(15000, toggleGraphs)
 
-def play_video():
-    cap = cv2.VideoCapture("/home/buga/wetter-screen/pictures/sample.mp4")
-
-    while True:
-        ret, frame = cap.read()
-        if not ret:
-            break
-
-        # Convert the frame to RGB format for Tkinter
-        frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
-
-        # Update the label image with the new frame
-        img = tk.PhotoImage(data=cv2.imencode('.ppm', frame)[1].tobytes())
-        my_label.config(image=img)
-        my_label.image = img
-
-        # Adjust this value to control the video playback speed
-        root.after(30, lambda: None)
-
-    cap.release()
 
 def createTemperatureGraphWeek():
     # Graph 1 (Temperature - Week)
@@ -820,24 +797,20 @@ header_visualization.pack(side="top", padx=10, pady=10)
 my_label = tk.Label(videoFrame, justify="left")
 my_label.pack()
 
-# #player = tkvideo(r"C:\Users\Chris\PycharmProjects\pythonProject\pictures\sample.mp4", my_label, loop=1, size=(1280, 720))
-# player = tkvideo("/home/buga/wetter-screen/pictures/sample.mp4", my_label, loop=1, size=(1280, 720))
-# player.play()
-
-video_thread = threading.Thread(target=play_video)
-video_thread.start()
-video_thread.join()
+#player = tkvideo(r"C:\Users\Chris\PycharmProjects\pythonProject\pictures\sample.mp4", my_label, loop=1, size=(1280, 720))
+player = tkvideo("/home/buga/wetter-screen/pictures/sample.mp4", my_label, loop=1, size=(1280, 720))
+player.play()
 
 # Frame Information
 informationFrame = tk.Frame(text_frame, bg="#F0F8FF")
 informationFrame.pack(side="top", fill="both", expand=True, padx=10, pady=10)
 
-canvas = tk.Canvas(informationFrame, width=int(2000/2), height=int(1125/2), bg='#F0F8FF', highlightthickness=0)
-canvas.pack(side="top")
-
-logoImage = tk.PhotoImage(file="/home/buga/wetter-screen/pictures/Logos.png")
-logoImage = logoImage.subsample(2)  # Resize 1/2
-canvas.create_image(10, 20, anchor="nw", image=logoImage)
+# canvas = tk.Canvas(informationFrame, width=int(2000/2), height=int(1125/2), bg='#F0F8FF', highlightthickness=0)
+# canvas.pack(side="top")
+#
+# logoImage = tk.PhotoImage(file="/home/buga/wetter-screen/pictures/Logos.png")
+# #logoImage = logoImage.subsample(2)  # Resize 1/2
+# canvas.create_image(10, 20, anchor="nw", image=logoImage)
 
 #--- Right Frame ---#
 rightFrame = tk.Frame(root, bg="white")
