@@ -367,7 +367,7 @@ def updateUTCI():
     # UTCI Information
     UTCIBuffer = tk.Frame(UTCIFrame, bg="#F0F8FF")
     UTCIBuffer.pack(side="top", fill="both", expand=True, pady=130)
-    currentUTCI = f"Gefühlte Außenluft-\nTemperatur Aktuell: \n {utci} °C"
+    currentUTCI = f"Gefühlte-Temperatur\nim Sprühnebel-\nbereich aktuell: \n {utci} °C"
 
     textUTCI = tk.Text(UTCIBuffer, font=("Arial", 24), bg='#F0F8FF', fg='black', height=3, width=20, borderwidth=0, highlightthickness=0)
     textUTCI.insert("1.0", currentUTCI, "center")
