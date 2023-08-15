@@ -18,17 +18,20 @@ def create_csv(date):
     #csv.to_csv(f"/wetter-screen/Data/Temperatur_{datum}.csv", sep = ";")
 
 def import_values_to_csv(time, temperatureOutside, temperatureCorridor, above30):
-    dataframe = pd.read_csv(f"/home/buga/Data/{datetime.today().date()}_Temperatures.csv", sep = ";")
-    act_index = dataframe.index.max() + 1
-    dataframe.loc[act_index, "Uhrzeit"] = time
-    dataframe.loc[act_index, "Temperatur_20m"] = temperatureOutside
-    dataframe.loc[act_index, "Temperatur_15m"] = temperatureCorridor
-    dataframe.loc[act_index, "ueber_30_C"] = above30
-    dataframe.to_csv(f"/home/buga/Data/{datetime.today().date()}_Temperatures.csv",  sep=";", index = False)
-    if (datetime(now.year, now.month, now.day, 23, 59, 0) >= time >= datetime(now.year, now.month, now.day, 23, 58, 0)):
-        sendMail()
-    elif (datetime(now.year, now.month, now.day, 12, 1, 0) >= time >= datetime(now.year, now.month, now.day, 12, 0, 0)):
-        sendMail()
+    if ((os.path.exists(f"/home/buga/Data/{datetime.today().date()}_Temperatures.csv"))):
+        dataframe = pd.read_csv(f"/home/buga/Data/{datetime.today().date()}_Temperatures.csv", sep = ";")
+        act_index = dataframe.index.max() + 1
+        dataframe.loc[act_index, "Uhrzeit"] = time
+        dataframe.loc[act_index, "Temperatur_20m"] = temperatureOutside
+        dataframe.loc[act_index, "Temperatur_15m"] = temperatureCorridor
+        dataframe.loc[act_index, "ueber_30_C"] = above30
+        dataframe.to_csv(f"/home/buga/Data/{datetime.today().date()}_Temperatures.csv",  sep=";", index = False)
+        if (datetime(now.year, now.month, now.day, 23, 59, 0) >= time >= datetime(now.year, now.month, now.day, 23, 58, 0)):
+            sendMail()
+        elif (datetime(now.year, now.month, now.day, 12, 1, 0) >= time >= datetime(now.year, now.month, now.day, 12, 0, 0)):
+            sendMail()
+    else:
+        create_csv(datetime.today().date())
 
 
 def sendMail():

@@ -760,7 +760,7 @@ timesTodaySecond = timesTodaySecond[::-1]
 #----------- Create Important Information -----------#
 
 # Create First File
-#FileManagement.create_csv(datetime.today().date())
+FileManagement.create_csv(datetime.today().date())
 
 # Main-Window
 root = tk.Tk()
