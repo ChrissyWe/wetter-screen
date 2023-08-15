@@ -67,10 +67,12 @@ def updateDataSensor():
     currentTime = datetime.now()
     newTemperatureFifteen = 14
     newTemperatureTwenty = 13
-    newTemperatureFifteen = SensorInformation.getTemperatureOutside()
-    newTemperatureTwenty = SensorInformation.getTemperatureCorridor()
-    FileManagement.import_values_to_csv(currentTime, newTemperatureFifteen, newTemperatureTwenty, minutesOverThirty)
-    root.after(60000, updateDataSensor)
+    try:
+        newTemperatureFifteen = SensorInformation.getTemperatureOutside()
+        newTemperatureTwenty = SensorInformation.getTemperatureCorridor()
+        FileManagement.import_values_to_csv(currentTime, newTemperatureFifteen, newTemperatureTwenty, minutesOverThirty)
+    finally:
+        root.after(60000, updateDataSensor)
 
 
 def updateData():
