@@ -44,7 +44,6 @@ def midnightProcedure():
 
     currentTime = datetime.now()
     #DriveManagement.writeExcel()
-    FileManagement.create_csv(datetime.today().date())
     timesTodayFirst = []
     timesTodaySecond = []
     timesHumidityTodayFirst = []
