@@ -7,8 +7,6 @@ import smtplib
 import mimetypes
 from email.message import EmailMessage
 
-now = datetime.now()
-
 def create_csv(date):
     if(os.path.exists(f"/home/buga/Data/{date}_Temperatures.csv")):
         return
@@ -19,6 +17,7 @@ def create_csv(date):
 
 def import_values_to_csv(time, temperatureOutside, temperatureCorridor, above30):
     if ((os.path.exists(f"/home/buga/Data/{datetime.today().date()}_Temperatures.csv"))):
+        now = datetime.now()
         dataframe = pd.read_csv(f"/home/buga/Data/{datetime.today().date()}_Temperatures.csv", sep = ";")
         act_index = dataframe.index.max() + 1
         dataframe.loc[act_index, "Uhrzeit"] = time
