@@ -699,7 +699,7 @@ humidity = []
 humiditySecond = []
 temperatures = []
 temperaturesSecond = []
-minutesOverThirty = 0
+minutesOverThirty = 144
 
 for item in dataWindSensorFirstWeek:
     if item["deviceId"] == '0004A30B00F7DA67':
