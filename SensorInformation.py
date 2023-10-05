@@ -2,7 +2,12 @@
 # misst Temperaturen mit DS1820
 import time
 
-#Grey Jumper Cable
+""" This class fetches the sensor information. 
+To do this, you must first follow this tutorial: 
+https://cbrell.de/blog/raspilab-wetterstation-dritte-mission-temperatur-messen-mit-dem-bs18b20/"""
+
+
+# First Sensor (initially with the grey Jumper Cable)
 def getTemperatureOutside():
     #time.sleep(2)
     tempfile = open("/sys/bus/w1/devices/28-3ce10457fddc/w1_slave")
@@ -15,7 +20,7 @@ def getTemperatureOutside():
     #print("Temperatur betraegt: " + str(temperature) + " Grad")
     return temperature
 
-#Orange Jumper Cable
+# Second Sensor (initially with the orange Jumper Cable)
 def getTemperatureCorridor():
     #time.sleep(2)
     tempfile = open("/sys/bus/w1/devices/28-3ce104571868/w1_slave")

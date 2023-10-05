@@ -3,6 +3,9 @@ from pydrive.drive import GoogleDrive
 from datetime import datetime, timedelta
 
 
+""" this class was for writing and reading files on google drive. eventually only worked on windows, not linux. 
+So the class was not used in the end and remains only if someone wants to keep trying on it. """
+
 
 #file = drive.CreateFile({'id': '1H2gFWfNR_tKqlj7HGooZQZy9iZOC-QLt'})
 #content_string = file.getContentString()

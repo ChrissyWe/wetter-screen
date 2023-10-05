@@ -9,14 +9,15 @@ import datetime as dt
 from datetime import datetime, timedelta
 import matplotlib.dates as mdates
 import time
-import DriveManagement
 import FileManagement
-from pydrive.auth import GoogleAuth
-from pydrive.drive import GoogleDrive
 
 import SensorInformation
 import UTCI
 
+"""" This class is the Main class. It is called to execute the actual program.  """
+
+# This method is for the graph to change for the next day.
+# It deletes all data from today's data retrieved from the REST API, but not the week's data.
 def midnightProcedure():
     global currentTime
     global timesTodayFirst
@@ -62,10 +63,9 @@ def midnightProcedure():
 
     #read_file()
 
+# Calls the FileManagement class and writes the new sensor data to the file. It is called once every minute.
 def updateDataSensor():
     currentTime = datetime.now()
-    newTemperatureFifteen = 14
-    newTemperatureTwenty = 13
     try:
         newTemperatureFifteen = SensorInformation.getTemperatureOutside()
         newTemperatureTwenty = SensorInformation.getTemperatureCorridor()
@@ -74,6 +74,9 @@ def updateDataSensor():
         root.after(60000, updateDataSensor)
 
 
+# Checks if there is new data from the REST API. If yes, then the new data is added to the graph.
+# It also checks if the data can contain errors (temperature over 50, humidity over 100).
+# The midnight method is also called here if the method is called at midnight.
 def updateData():
     # Current Request
     global timesTodayFirst
@@ -110,15 +113,7 @@ def updateData():
     global blocking
 
     blocking = True
-    newTime = datetime.today()
     currentTime = datetime.now()
-    #if newTemperatureOutside > 30:
-     #   minutesOverThirty += 1
-      #  updateFacts()
-
-
-    #newTemperatureOutside = round(newTemperatureOutside, 1)
-    #newTemperatureCorridor = round(newTemperatureCorridor, 1)
 
     try:
         currentData = requests.get(currentURL)
@@ -133,7 +128,7 @@ def updateData():
     if currentJData != "--":
         currentTemperatureReference = float(currentJData["t2m_med"])
         currentHumidityReference = float(currentJData["rf_med"])
-        currentTimes = dt.datetime.strptime(currentJData["measure_date"], date_format) + timedelta(hours=2)
+        currentTimes = dt.datetime.strptime(currentJData["measure_date"], date_format) + timedelta(hours=2) # the API had a different date format and was two hours behind CET
 
     if (currentJData != "--") & (currentTimes != timesReference[len(timesReference) - 1]) & (currentTemperatureReference < 50) & (currentHumidityReference <= 100):
         timesReference.pop(0)
@@ -281,7 +276,7 @@ def updateData():
 
     root.after(600000, updateData)
 
-
+# Updates the display of the temperature.
 def updateFacts():
     global informationTemperature
     global informationHumidity
@@ -346,6 +341,7 @@ def updateFacts():
     text_humidity_information.tag_add("blue", startIndexHumidity, endIndexHumidity)
 
 
+# Should update the UTCI display. Due to lack of time it was not implemented further.
 def updateUTCI():
     global utci
     global UTCIImage
@@ -424,6 +420,7 @@ def updateUTCI():
     textUTCI.pack(side="top")
 
 
+# Switches between graphs by deleting the old ones and creating new ones using other methods.
 def toggleGraphs():
     global currentGraphTemperature
     global currentGraphHumidity
@@ -465,6 +462,7 @@ def toggleGraphs():
     root.after(15000, toggleGraphs)
 
 
+#Creates the graph of this week's temperature.
 def createTemperatureGraphWeek():
     # Graph 1 (Temperature - Week)
     fig1, ax1 = plt.subplots()
@@ -492,6 +490,7 @@ def createTemperatureGraphWeek():
     return figure, ax1, fig1
 
 
+# Creates the graph of today's temperature.
 def createTemperatureGraphDay():
     # Graph 1 (Temperature - Day)
     fig3, ax3 = plt.subplots()
@@ -517,7 +516,7 @@ def createTemperatureGraphDay():
     figure = FigureCanvasTkAgg(fig3, master=graph_frame)
     return figure, ax3, fig3
 
-
+# Creates the graph of this week's humidity.
 def createHumidityGraphWeek():
     # Graph 2 (Humidity)
     fig2, ax2 = plt.subplots()
@@ -544,6 +543,7 @@ def createHumidityGraphWeek():
     return figure, ax2, fig2
 
 
+# Creates the graph of this today's humidity.
 def createHumidityGraphDay():
     fig4, ax4 = plt.subplots()
     ax4.set_title('Relative Luftfeuchte heute', color="black", fontsize=28)
@@ -569,15 +569,6 @@ def createHumidityGraphDay():
     return figure, ax4, fig4
 
 
-def read_file():
-    generalInformation = "TODO"
-    #textInformation.delete("1.0", tk.END)
-    #textInformation.insert(tk.END, generalInformation)
-    #textInformation.tag_configure("left_align", justify="left")
-    #textInformation.tag_add("left_align", "1.0", tk.END)
-
-
-
 #----------- Get Information -----------#
 
 # Date Information
@@ -594,11 +585,8 @@ print(date_last_week.strftime('%Y-%m-%d'))
 datetimeLastWeek = datetime(datetime.now().year, datetime.now().month, datetime.now().day, 0, 0, 0) + timedelta(days=-7)
 lastWeekSensorSpinelli = urllib.parse.quote(datetimeLastWeek.strftime('%Y-%m-%dT%H:%M:%S') + '.000Z', safe='')
 
+# Ensures that no graph can be created while tapping on new data, so that no race condition can occur.
 blocking = False
-
-# Current Request
-#urlCurrent = "https://stadtklimaanalyse-mannheim.de/wp-json/climate-data/v1/current/288"
-#dataCurrent = requests.get(urlCurrent).json()
 
 # Data Request Station 288
 stationURL = f"https://stadtklimaanalyse-mannheim.de/wp-json/climate-data/v1/historic/292/{date_last_week.strftime('%Y-%m-%d')}/{today_date.strftime('%Y-%m-%d')}"
@@ -609,6 +597,7 @@ try:
 except requests.RequestException as e:
     print("Fehler bei der Anfrage:", e)
 
+# if request was successfully, the status code should be 200
 if data.status_code == 200:
     stationData = data.json()
 
@@ -679,7 +668,7 @@ if airSensorFirstWeek.status_code == 200:
 if airSensorSecondWeek.status_code == 200:
     dataAirSensorSecondWeek = airSensorSecondWeek.json()
 
-# Values of Temperatures
+# initializes values of temperatures
 # Today
 timesTodayFirst = []
 timesTodaySecond = []
@@ -701,6 +690,7 @@ temperatures = []
 temperaturesSecond = []
 minutesOverThirty = 176
 
+# fetches the desired variables from the REST API, can vary greatly depending on the API.
 for item in dataWindSensorFirstWeek:
     if item["deviceId"] == '0004A30B00F7DA67':
         for time_series in item["timeSeries"]:
@@ -711,17 +701,21 @@ for item in dataWindSensorFirstWeek:
                 timesHumidity = time_series["timestamps"]
                 humidity = time_series["values"]
 
+# Adjusts date format
 times = list(map(lambda x: datetime.strptime(x[:-5], "%Y-%m-%dT%H:%M:%S.%f"), times))
 timesHumidity = list(map(lambda x: datetime.strptime(x[:-5], "%Y-%m-%dT%H:%M:%S.%f"), timesHumidity))
 
+# Fetches the data of today from those of the whole week
 timesTodayFirst = list(filter(lambda x: x >= todayMidnight, times))
 temperaturesTodayFirst = temperatures[:len(timesTodayFirst)]
 timesHumidityTodayFirst = list(filter(lambda x: x >= todayMidnight, timesHumidity))
 humidityToday = humidity[:len(timesHumidityTodayFirst)]
 
+# first value of the list of today is the current value.
 currentTemperatureMist = temperatures[0]
 currentTime = times[0]
 
+# turns the list around so that the newest value is at the very end
 times = times[::-1]
 timesHumidity = timesHumidity[::-1]
 timesTodayFirst = timesTodayFirst[::-1]
@@ -769,7 +763,6 @@ root.config(background="white")
 root.attributes("-fullscreen", True)
 screen_width = root.winfo_screenwidth()
 screen_height = root.winfo_screenheight()
-#4096, 2160
 root.geometry(f"{screen_width}x{screen_height}")
 left_width_pct = 0.5
 right_width_pct = 1.0 - left_width_pct
@@ -794,13 +787,14 @@ videoFrame.pack(side="top", fill="both", expand=True, padx=10, pady=10)
 header_visualization = tk.Label(videoFrame, text='Visualisierungen zu Planung und Fertigung', justify="left", font=custom_font, bg='#F0F8FF', fg='black')
 header_visualization.pack(side="top", padx=10, pady=10)
 
-# Frame Information
+# Frame Information, Video is at the end of the script because there were thread inconsistencies
 informationFrame = tk.Frame(text_frame, bg="#F0F8FF")
 informationFrame.pack(side="top", fill="both", expand=True, padx=10, pady=10)
 
 canvas = tk.Canvas(informationFrame, width=int(2000/2), height=int(1125/2), bg='#F0F8FF', highlightthickness=0)
 canvas.pack(side="top")
 
+# Logo
 logoImage = tk.PhotoImage(file="/home/buga/wetter-screen/pictures/Logos.png")
 logoImage = logoImage.subsample(2)  # Resize 1/2
 canvas.create_image(10, 20, anchor="nw", image=logoImage)
@@ -819,8 +813,6 @@ date_format = '%Y-%m-%dT%H:%M:%SZ'
 currentTime = datetime.today()
 currentTemperatureFifteen = SensorInformation.getTemperatureOutside()
 currentTemperatureTwenty = SensorInformation.getTemperatureCorridor()
-
-
 
 delta = timedelta(hours=2)
 
@@ -868,7 +860,6 @@ updateDataSensor()
 my_label = tk.Label(videoFrame, justify="left")
 my_label.pack()
 
-#player = tkvideo(r"C:\Users\Chris\PycharmProjects\pythonProject\pictures\sample.mp4", my_label, loop=1, size=(1280, 720))
 player = tkvideo("/home/buga/wetter-screen/pictures/sample.mp4", my_label, loop=1, size=(1280, 720))
 player.play()
 

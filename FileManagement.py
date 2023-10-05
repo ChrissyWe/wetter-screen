@@ -7,14 +7,17 @@ import smtplib
 import mimetypes
 from email.message import EmailMessage
 
+""" The class is there to manage the storing of the data """
+
+# creates the file
 def create_csv(date):
     if(os.path.exists(f"/home/buga/Data/{date}_Temperatures.csv")):
         return
     else:
         csv = pd.DataFrame(columns = ["Uhrzeit", "Temperatur_20m", "Temperatur_15m", "ueber_30_C"])
         csv.to_csv(f"/home/buga/Data/{date}_Temperatures.csv", sep=";", index = False)
-    #csv.to_csv(f"/wetter-screen/Data/Temperatur_{datum}.csv", sep = ";")
 
+# writes the given data into the file
 def import_values_to_csv(time, temperatureOutside, temperatureCorridor, above30):
     if ((os.path.exists(f"/home/buga/Data/{datetime.today().date()}_Temperatures.csv"))):
         now = datetime.now()
@@ -33,6 +36,7 @@ def import_values_to_csv(time, temperatureOutside, temperatureCorridor, above30)
         create_csv(datetime.today().date())
 
 
+# sends the mail to a gmx mail (doesn't work with Google or some other mail providers)
 def sendMail():
     msg = EmailMessage()
     msg['Subject'] = 'Diese E-mail enthält einen Anhang'
